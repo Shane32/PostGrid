@@ -11,9 +11,6 @@ public partial class PostGridConnection
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        // Create the request message
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/contacts");
-        
         // Convert the request object to form data
         var formData = new List<KeyValuePair<string, string>>();
         

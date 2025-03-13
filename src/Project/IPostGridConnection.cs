@@ -12,6 +12,8 @@ public interface IPostGridConnection
     /// <returns>A task representing the asynchronous operation, containing the API key.</returns>
     public ValueTask<string> GetApiKey(CancellationToken cancellationToken = default);
     
+    #region Contacts
+    
     /// <summary>
     /// Executes a create contact request against the PostGrid API.
     /// </summary>
@@ -51,4 +53,50 @@ public interface IPostGridConnection
     /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
     /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
     public Task<ListResponse<Contacts.ContactResponse>> ExecuteAsync(Contacts.ListRequest request, CancellationToken cancellationToken = default);
+    
+    #endregion
+    
+    #region Bank Accounts
+    
+    /// <summary>
+    /// Executes a create bank account request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The bank account creation request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the bank account response from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<BankAccounts.BankAccountResponse> ExecuteAsync(BankAccounts.CreateRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Executes a get bank account request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The bank account get request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the bank account response from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<BankAccounts.BankAccountResponse> ExecuteAsync(BankAccounts.GetRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Executes a delete bank account request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The bank account delete request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the bank account response from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<BankAccounts.BankAccountResponse> ExecuteAsync(BankAccounts.DeleteRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Executes a list bank accounts request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The bank accounts list request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the paginated list of bank accounts from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<ListResponse<BankAccounts.BankAccountResponse>> ExecuteAsync(BankAccounts.ListRequest request, CancellationToken cancellationToken = default);
+    
+    #endregion
 }

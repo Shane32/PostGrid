@@ -11,11 +11,6 @@ public class ContactResponse
     public string? Id { get; set; }
     
     /// <summary>
-    /// Always contact
-    /// </summary>
-    public string? Object { get; set; }
-    
-    /// <summary>
     /// true if this is a live mode contact else false
     /// </summary>
     public bool Live { get; set; }

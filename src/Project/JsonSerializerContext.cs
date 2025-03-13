@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Shane32.PostGrid.Contacts;
+using Shane32.PostGrid.BankAccounts;
 
 namespace Shane32.PostGrid;
 
@@ -12,6 +13,8 @@ namespace Shane32.PostGrid;
 [JsonSerializable(typeof(ContactResponse))]
 [JsonSerializable(typeof(ErrorResponse))]
 [JsonSerializable(typeof(ListResponse<ContactResponse>))]
+[JsonSerializable(typeof(BankAccountResponse))]
+[JsonSerializable(typeof(ListResponse<BankAccountResponse>))]
 internal partial class PostGridJsonSerializerContext : JsonSerializerContext
 {
 }
