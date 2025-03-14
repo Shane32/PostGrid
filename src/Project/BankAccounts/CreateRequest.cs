@@ -32,6 +32,12 @@ public class CreateRequest
     public byte[]? SignatureImage { get; set; }
     
     /// <summary>
+    /// The MIME type of the signature image (e.g., "image/png", "image/jpeg").
+    /// Defaults to "image/png" if not specified.
+    /// </summary>
+    public string? SignatureImageContentType { get; set; }
+    
+    /// <summary>
     /// A string which will be used to create a signature for documents.
     /// This field is required if SignatureImage is not provided.
     /// </summary>

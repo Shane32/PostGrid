@@ -99,4 +99,58 @@ public interface IPostGridConnection
     public Task<ListResponse<BankAccounts.BankAccountResponse>> ExecuteAsync(BankAccounts.ListRequest request, CancellationToken cancellationToken = default);
     
     #endregion
+    
+    #region Cheques
+    
+    /// <summary>
+    /// Executes a create check request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The check creation request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the check response from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<Checks.CheckResponse> ExecuteAsync(Checks.CreateRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Executes a get check request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The check get request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the check response from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<Checks.CheckResponse> ExecuteAsync(Checks.GetRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Executes a delete check request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The check delete request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the check response from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<Checks.CheckResponse> ExecuteAsync(Checks.DeleteRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Executes a cancel check request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The check cancellation request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the check response from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<Checks.CheckResponse> ExecuteAsync(Checks.CancelRequest request, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Executes a list checks request against the PostGrid API.
+    /// </summary>
+    /// <param name="request">The checks list request to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A task representing the asynchronous operation, containing the paginated list of checks from the API.</returns>
+    /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
+    /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
+    public Task<ListResponse<Checks.CheckResponse>> ExecuteAsync(Checks.ListRequest request, CancellationToken cancellationToken = default);
+    
+    #endregion
 }

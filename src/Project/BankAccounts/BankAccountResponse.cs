@@ -41,7 +41,7 @@ public class BankAccountResponse
     public string? BankCountryCode { get; set; }
     
     /// <summary>
-    /// Transit number for cheques associated with this account (CA only)
+    /// Transit number for checks associated with this account (CA only)
     /// </summary>
     public string? TransitNumber { get; set; }
     

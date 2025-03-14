@@ -31,4 +31,11 @@ public class PostGrid
     /// Gets the bank accounts API for creating and managing bank accounts.
     /// </summary>
     public PostGridBankAccounts BankAccounts => _bankAccounts ??= new PostGridBankAccounts(_connection);
+    
+    private PostGridChecks? _checks;
+    
+    /// <summary>
+    /// Gets the checks API for creating and managing checks.
+    /// </summary>
+    public PostGridChecks Checks => _checks ??= new PostGridChecks(_connection);
 }

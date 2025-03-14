@@ -29,8 +29,8 @@ public partial class PostGridConnection
             
             // Add the signature image
             var imageContent = new ByteArrayContent(request.SignatureImage);
-            imageContent.Headers.ContentType = new MediaTypeHeaderValue("image/png"); // Assuming PNG, adjust if needed
-            content.Add(imageContent, "signatureImage", "signature.png");
+            imageContent.Headers.ContentType = new MediaTypeHeaderValue(request.SignatureImageContentType ?? "image/png");
+            content.Add(imageContent, "signatureImage");
             
             // Add optional fields
             if (request.BankPrimaryLine != null)
