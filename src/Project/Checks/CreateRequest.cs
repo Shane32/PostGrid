@@ -6,6 +6,12 @@ namespace Shane32.PostGrid.Checks;
 public class CreateRequest
 {
     /// <summary>
+    /// An idempotency key to prevent duplicate requests.
+    /// This value will be sent as the 'Idempotency-Key' header.
+    /// </summary>
+    public required Guid IdempotencyKey { get; set; }
+
+    /// <summary>
     /// The id or contact object of the receiver. You can either pass a contact object or a contact's id.
     /// </summary>
     public required string To { get; set; }

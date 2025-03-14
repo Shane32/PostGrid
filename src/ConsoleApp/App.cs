@@ -80,14 +80,17 @@ public class App
             Amount = 10000, // $100.00 (amount in cents)
             Number = 1001, // Check number
             Memo = "Example payment",
-            Message = "<p>Thank you for your business!</p>"
+            Message = "<p>Thank you for your business!</p>",
+            IdempotencyKey = Guid.NewGuid() // Add a unique idempotency key
         };
 
         Console.WriteLine("Creating check...");
         var checkResponse = await _postGrid.Checks.CreateAsync(checkRequest);
+        var checkResponse2 = await _postGrid.Checks.CreateAsync(checkRequest); // This will return the same data because the idempotency key is the same
 
         // Display the response
         Console.WriteLine($"Check created with ID: {checkResponse.Id}");
+        Console.WriteLine($"Similar check created with ID: {checkResponse2.Id}");
         Console.WriteLine($"Status: {checkResponse.Status}");
         Console.WriteLine($"Preview URL: {checkResponse.Url}");
         Console.WriteLine();

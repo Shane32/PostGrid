@@ -84,6 +84,10 @@ public partial class PostGridConnection
             Func<HttpRequestMessage> requestFactory = () => {
                 var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/cheques");
                 newRequest.Content = content;
+                
+                // Add idempotency key header
+                newRequest.Headers.Add("Idempotency-Key", request.IdempotencyKey.ToString());
+                
                 return newRequest;
             };
 
@@ -156,6 +160,10 @@ public partial class PostGridConnection
             Func<HttpRequestMessage> requestFactory = () => {
                 var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/cheques");
                 newRequest.Content = new FormUrlEncodedContent(formData);
+                
+                // Add idempotency key header
+                newRequest.Headers.Add("Idempotency-Key", request.IdempotencyKey.ToString());
+                
                 return newRequest;
             };
 
