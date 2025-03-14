@@ -1,0 +1,341 @@
+namespace Microsoft.Extensions.DependencyInjection
+{
+    public static class PostGridExtensions
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddPostGrid(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration) { }
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddPostGrid(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Shane32.PostGrid.PostGridOptions>? configureOptions) { }
+    }
+}
+namespace Shane32.PostGrid.BankAccounts
+{
+    public class BankAccountResponse
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public BankAccountResponse() { }
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumberAndIDSHA256")]
+        public string AccountNumberAndIDSHA256 { get; set; }
+        public string AccountNumberLast4 { get; set; }
+        public string BankCountryCode { get; set; }
+        public string BankName { get; set; }
+        public string? BankPrimaryLine { get; set; }
+        public string? BankSecondaryLine { get; set; }
+        public string? Description { get; set; }
+        public string Id { get; set; }
+        public bool Live { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? Metadata { get; set; }
+        public string RoutingNumber { get; set; }
+    }
+    public class CreateRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public CreateRequest() { }
+        public string AccountNumber { get; set; }
+        public string BankCountryCode { get; set; }
+        public string BankName { get; set; }
+        public string? BankPrimaryLine { get; set; }
+        public string? BankSecondaryLine { get; set; }
+        public string? Description { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? Metadata { get; set; }
+        public string RoutingNumber { get; set; }
+        public byte[]? SignatureImage { get; set; }
+        public string? SignatureImageContentType { get; set; }
+        public string? SignatureText { get; set; }
+    }
+    public class DeleteRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public DeleteRequest() { }
+        public string Id { get; set; }
+    }
+    public class GetRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public GetRequest() { }
+        public string Id { get; set; }
+    }
+    public class ListRequest
+    {
+        public ListRequest() { }
+        public int? Limit { get; set; }
+        public string? Search { get; set; }
+        public int? Skip { get; set; }
+    }
+}
+namespace Shane32.PostGrid.Checks
+{
+    public class CancelRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public CancelRequest() { }
+        public string Id { get; set; }
+        public string? Note { get; set; }
+    }
+    public class CheckResponse
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public CheckResponse() { }
+        public int Amount { get; set; }
+        public string BankAccount { get; set; }
+        public string CurrencyCode { get; set; }
+        public string? Description { get; set; }
+        public Shane32.PostGrid.Contacts.ContactBaseResponse From { get; set; }
+        public string Id { get; set; }
+        public string? ImbStatus { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("letterHTML")]
+        public string? LetterHTML { get; set; }
+        public string? LetterTemplate { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("letterUploadedPDF")]
+        public string? LetterUploadedPDF { get; set; }
+        public bool Live { get; set; }
+        public string? Logo { get; set; }
+        public string? MailingClass { get; set; }
+        public string? Memo { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? MergeVariables { get; set; }
+        public string? Message { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? Metadata { get; set; }
+        public int Number { get; set; }
+        public System.DateTimeOffset SendDate { get; set; }
+        public string Status { get; set; }
+        public Shane32.PostGrid.Contacts.ContactBaseResponse To { get; set; }
+        public string? Url { get; set; }
+    }
+    public class CreateRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public CreateRequest() { }
+        public int Amount { get; set; }
+        public string BankAccount { get; set; }
+        public string? CurrencyCode { get; set; }
+        public string? Description { get; set; }
+        public bool? Express { get; set; }
+        public string? ExtraService { get; set; }
+        public string From { get; set; }
+        public System.Guid IdempotencyKey { get; set; }
+        public string? LetterHTML { get; set; }
+        public byte[]? LetterPDF { get; set; }
+        public string? LetterPDFContentType { get; set; }
+        public string? Logo { get; set; }
+        public string? MailingClass { get; set; }
+        public string? Memo { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? MergeVariables { get; set; }
+        public string? Message { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? Metadata { get; set; }
+        public int Number { get; set; }
+        public string? RedirectTo { get; set; }
+        public System.DateTimeOffset? SendDate { get; set; }
+        public string? Size { get; set; }
+        public string To { get; set; }
+    }
+    public class DeleteRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public DeleteRequest() { }
+        public string Id { get; set; }
+    }
+    public class GetRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public GetRequest() { }
+        public string Id { get; set; }
+    }
+    public class ListRequest
+    {
+        public ListRequest() { }
+        public int? Limit { get; set; }
+        public int? Skip { get; set; }
+    }
+}
+namespace Shane32.PostGrid.Contacts
+{
+    public class ContactBaseResponse
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public ContactBaseResponse() { }
+        public string AddressLine1 { get; set; }
+        public string? AddressLine2 { get; set; }
+        public string? AddressStatus { get; set; }
+        public string? CompanyName { get; set; }
+        public string? CountryCode { get; set; }
+        public string? Description { get; set; }
+        public string? Email { get; set; }
+        public string? FirstName { get; set; }
+        public string Id { get; set; }
+        public string? JobTitle { get; set; }
+        public string? LastName { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? Metadata { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? PostalOrZip { get; set; }
+        public string? ProvinceOrState { get; set; }
+        public bool Secret { get; set; }
+    }
+    public class ContactResponse : Shane32.PostGrid.Contacts.ContactBaseResponse
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public ContactResponse() { }
+        public bool ForceVerifiedStatus { get; set; }
+        public bool Live { get; set; }
+        public bool SkipVerification { get; set; }
+    }
+    public class CreateRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public CreateRequest() { }
+        public string AddressLine1 { get; set; }
+        public string? AddressLine2 { get; set; }
+        public string? City { get; set; }
+        public string? CompanyName { get; set; }
+        public string CountryCode { get; set; }
+        public string? Description { get; set; }
+        public string? Email { get; set; }
+        public string? FirstName { get; set; }
+        public bool ForceVerifiedStatus { get; set; }
+        public string? JobTitle { get; set; }
+        public string? LastName { get; set; }
+        public System.Collections.Generic.Dictionary<string, string>? Metadata { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? PostalOrZip { get; set; }
+        public string? ProvinceOrState { get; set; }
+        public bool Secret { get; set; }
+        public bool SkipVerification { get; set; }
+    }
+    public class DeleteRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public DeleteRequest() { }
+        public string Id { get; set; }
+    }
+    public class GetRequest
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public GetRequest() { }
+        public string Id { get; set; }
+    }
+    public class ListRequest
+    {
+        public ListRequest() { }
+        public int? Limit { get; set; }
+        public string? Search { get; set; }
+        public int? Skip { get; set; }
+    }
+}
+namespace Shane32.PostGrid.Helpers
+{
+    public class PostGridBankAccounts
+    {
+        public PostGridBankAccounts(Shane32.PostGrid.IPostGridConnection connection) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> CreateAsync(Shane32.PostGrid.BankAccounts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridBankAccounts.<ListAllAsync>d__7))]
+        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.BankAccounts.BankAccountResponse> ListAllAsync(int pageLimit = 100, string? search = null, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ListAsync(Shane32.PostGrid.BankAccounts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ListAsync(int? skip = default, int? limit = default, string? search = null, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public class PostGridChecks
+    {
+        public PostGridChecks(Shane32.PostGrid.IPostGridConnection connection) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> CancelAsync(string id, string? note = null, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> CreateAsync(Shane32.PostGrid.Checks.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridChecks.<ListAllAsync>d__8))]
+        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.Checks.CheckResponse> ListAllAsync(int pageLimit = 100, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ListAsync(Shane32.PostGrid.Checks.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ListAsync(int? skip = default, int? limit = default, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public class PostGridContacts
+    {
+        public PostGridContacts(Shane32.PostGrid.IPostGridConnection connection) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> CreateAsync(Shane32.PostGrid.Contacts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridContacts.<ListAllAsync>d__7))]
+        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.Contacts.ContactResponse> ListAllAsync(int pageLimit = 100, string? search = null, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ListAsync(Shane32.PostGrid.Contacts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ListAsync(int? skip = default, int? limit = default, string? search = null, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+}
+namespace Shane32.PostGrid
+{
+    public interface IPostGridConnection
+    {
+        System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.GetRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ExecuteAsync(Shane32.PostGrid.BankAccounts.ListRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.CancelRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.CreateRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.GetRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ExecuteAsync(Shane32.PostGrid.Checks.ListRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.GetRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ExecuteAsync(Shane32.PostGrid.Contacts.ListRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.ValueTask<string> GetApiKey(System.Threading.CancellationToken cancellationToken = default);
+    }
+    public class ListResponse<T>
+    {
+        public ListResponse() { }
+        public T[]? Data { get; set; }
+        public int Limit { get; set; }
+        public int Skip { get; set; }
+        public int TotalCount { get; set; }
+    }
+    public class PostGrid
+    {
+        public PostGrid(Shane32.PostGrid.IPostGridConnection connection) { }
+        public Shane32.PostGrid.Helpers.PostGridBankAccounts BankAccounts { get; }
+        public Shane32.PostGrid.Helpers.PostGridChecks Checks { get; }
+        public Shane32.PostGrid.Helpers.PostGridContacts Contacts { get; }
+    }
+    public class PostGridConnection : Shane32.PostGrid.IPostGridConnection
+    {
+        public PostGridConnection(System.Net.Http.HttpClient httpClient, Microsoft.Extensions.Options.IOptions<Shane32.PostGrid.PostGridOptions> options) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.GetRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ExecuteAsync(Shane32.PostGrid.BankAccounts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.CancelRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.GetRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ExecuteAsync(Shane32.PostGrid.Checks.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.GetRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ExecuteAsync(Shane32.PostGrid.Contacts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public virtual System.Threading.Tasks.ValueTask<string> GetApiKey(System.Threading.CancellationToken cancellationToken = default) { }
+        protected virtual System.Threading.Tasks.Task<T> SendRequestAsync<T>(System.Func<System.Net.Http.HttpRequestMessage> requestFactory, System.Func<System.IO.Stream, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<T>> deserializeFunc, System.Threading.CancellationToken cancellationToken = default) { }
+        protected virtual System.Threading.Tasks.Task<T> SendRequestAsync<T>(System.Func<System.Net.Http.HttpRequestMessage> requestFactory, System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> jsonTypeInfo, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public class PostGridException : System.Net.Http.HttpRequestException
+    {
+        public PostGridException(string type, string message, System.Net.HttpStatusCode? statusCode, System.Exception? inner) { }
+        public System.Net.HttpStatusCode? StatusCode { get; }
+        public string Type { get; }
+    }
+    public class PostGridOptions
+    {
+        public PostGridOptions() { }
+        public string ApiKey { get; set; }
+        public string BaseUrl { get; set; }
+        public int DefaultRetryDelayMs { get; set; }
+        public int MaxRetryAttempts { get; set; }
+        public System.Func<int, System.Threading.Tasks.ValueTask<System.TimeSpan?>>? ShouldRetryAsync { get; set; }
+    }
+}

@@ -30,7 +30,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.App" Version="2.1.*" Condition="'$(TargetFramework)' == 'netcoreapp2.1'" />
+    <PackageReference Include="PublicApiGenerator" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup>
