@@ -44,7 +44,7 @@ public partial class PostGridConnection : IPostGridConnection
     /// <returns>The deserialized response object.</returns>
     /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
     /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
-    private async Task<T> SendRequestAsync<T>(Func<HttpRequestMessage> requestFactory, Func<Stream, CancellationToken, ValueTask<T>> deserializeFunc, CancellationToken cancellationToken = default)
+    protected virtual async Task<T> SendRequestAsync<T>(Func<HttpRequestMessage> requestFactory, Func<Stream, CancellationToken, ValueTask<T>> deserializeFunc, CancellationToken cancellationToken = default)
     {
         int retryCount = 0;
         HttpResponseMessage? response = null;
@@ -146,24 +146,12 @@ public partial class PostGridConnection : IPostGridConnection
     /// <returns>The deserialized response object.</returns>
     /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
     /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
-    private Task<T> SendRequestAsync<T>(Func<HttpRequestMessage> requestFactory, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken = default)
+    protected virtual Task<T> SendRequestAsync<T>(Func<HttpRequestMessage> requestFactory, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken = default)
     {
         return SendRequestAsync(
             requestFactory,
-            async (stream, token) => {
-                var memoryStream = new MemoryStream();
-#if NET6_0_OR_GREATER
-                await stream.CopyToAsync(memoryStream, token);
-#else
-                await stream.CopyToAsync(memoryStream);
-#endif
-                memoryStream.Position = 0;
-                var stringData = await new StreamReader(memoryStream).ReadToEndAsync();
-                Console.WriteLine("Parsing: " + stringData);
-                memoryStream.Position = 0;
-                return await JsonSerializer.DeserializeAsync(memoryStream, jsonTypeInfo, token)
-                    ?? throw new JsonException("The response returned a null object.");
-            },
+            async (stream, token) => await JsonSerializer.DeserializeAsync(stream, jsonTypeInfo, token)
+                ?? throw new JsonException("The response returned a null object."),
             cancellationToken);
     }
 }

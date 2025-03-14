@@ -14,8 +14,7 @@ public class App
     public async Task RunAsync()
     {
         // Create a new contact
-        var contactRequest = new Shane32.PostGrid.Contacts.CreateRequest
-        {
+        var contactRequest = new Shane32.PostGrid.Contacts.CreateRequest {
             FirstName = "Kevin",
             CompanyName = "PostGrid",
             AddressLine1 = "20-20 bay st",
@@ -43,9 +42,15 @@ public class App
         Console.WriteLine($"Contact created with ID: {contactResponse.Id}");
         Console.WriteLine($"Status: {contactResponse.AddressStatus}");
 
+        // Get the contact by ID and display formatted JSON
+        Console.WriteLine("Getting contact by ID...");
+        var retrievedContact = await _postGrid.Contacts.GetAsync(contactResponse.Id);
+        var contactJson = System.Text.Json.JsonSerializer.Serialize(retrievedContact, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        Console.WriteLine(contactJson);
+        Console.WriteLine();
+
         // Create a bank account
-        var bankAccountRequest = new Shane32.PostGrid.BankAccounts.CreateRequest
-        {
+        var bankAccountRequest = new Shane32.PostGrid.BankAccounts.CreateRequest {
             BankName = "Example Bank",
             AccountNumber = "123456789",
             RoutingNumber = "021000021", // Example routing number
@@ -60,9 +65,15 @@ public class App
         // Display the response
         Console.WriteLine($"Bank account created with ID: {bankAccountResponse.Id}");
 
+        // Get the bank account by ID and display formatted JSON
+        Console.WriteLine("Getting bank account by ID...");
+        var retrievedBankAccount = await _postGrid.BankAccounts.GetAsync(bankAccountResponse.Id);
+        var bankAccountJson = System.Text.Json.JsonSerializer.Serialize(retrievedBankAccount, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        Console.WriteLine(bankAccountJson);
+        Console.WriteLine();
+
         // Create a check
-        var checkRequest = new Shane32.PostGrid.Checks.CreateRequest
-        {
+        var checkRequest = new Shane32.PostGrid.Checks.CreateRequest {
             To = contactResponse.Id!, // Use the contact we just created as the recipient
             From = contactResponse.Id!, // Use the same contact as the sender for this example
             BankAccount = bankAccountResponse.Id!, // Use the bank account we just created
@@ -81,6 +92,15 @@ public class App
         Console.WriteLine($"Preview URL: {checkResponse.Url}");
         Console.WriteLine();
         var pretty = System.Text.Json.JsonSerializer.Serialize(checkResponse, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        Console.WriteLine("Check resopnse:");
         Console.WriteLine(pretty);
+        Console.WriteLine();
+        Console.ReadLine(); // Pause before attempting to read the check
+
+        // Get the check by ID and display formatted JSON
+        Console.WriteLine("Getting check by ID...");
+        var retrievedCheck = await _postGrid.Checks.GetAsync(checkResponse.Id);
+        var checkJson = System.Text.Json.JsonSerializer.Serialize(retrievedCheck, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        Console.WriteLine(checkJson);
     }
 }
