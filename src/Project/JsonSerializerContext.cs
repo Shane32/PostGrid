@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Shane32.PostGrid.Contacts;
 using Shane32.PostGrid.BankAccounts;
 using Shane32.PostGrid.Checks;
+using Shane32.PostGrid.Contacts;
 
 namespace Shane32.PostGrid;
 

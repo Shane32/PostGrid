@@ -47,102 +47,89 @@ public partial class PostGridConnection : IPostGridConnection
     {
         int retryCount = 0;
         HttpResponseMessage? response = null;
-        
+
         // Get the API key
         var apiKey = await GetApiKey(cancellationToken);
 
-        while (true)
-        {
+        while (true) {
             // Create a new request for each attempt
             using var request = requestFactory();
-            
+
             // Add the API key header to the request
             request.Headers.Add("x-api-key", apiKey);
-            
+
             // Send the request
             response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-            
+
             // If we got a 429 status code (rate limit) and retries are enabled
             if ((int)response.StatusCode == 429 &&
                 _options.MaxRetryAttempts > 0 &&
-                retryCount < _options.MaxRetryAttempts)
-            {
+                retryCount < _options.MaxRetryAttempts) {
                 // Increment retry count
                 retryCount++;
-                
+
                 // Determine if we should retry and how long to wait
                 TimeSpan? retryDelay;
-                
-                if (_options.ShouldRetryAsync != null)
-                {
+
+                if (_options.ShouldRetryAsync != null) {
                     // Use the custom retry strategy
                     retryDelay = await _options.ShouldRetryAsync(retryCount);
-                }
-                else
-                {
+                } else {
                     // Use default exponential backoff strategy
                     retryDelay = TimeSpan.FromMilliseconds(_options.DefaultRetryDelayMs * Math.Pow(2, retryCount - 1));
                 }
-                
+
                 // If retryDelay is null, stop retrying
-                if (retryDelay == null)
-                {
+                if (retryDelay == null) {
                     break;
                 }
-                
+
                 // If retryDelay is positive, wait before retrying
-                if (retryDelay.Value > TimeSpan.Zero)
-                {
+                if (retryDelay.Value > TimeSpan.Zero) {
                     await Task.Delay(retryDelay.Value, cancellationToken);
                 }
-                
+
                 // Dispose the current response before retrying
                 response.Dispose();
-                
+
                 // Continue to the next iteration (retry)
                 continue;
             }
-            
+
             // Break the loop if we're not retrying
             break;
         }
-        
+
         // Check for success status code
-        if (!response.IsSuccessStatusCode)
-        {
+        if (!response.IsSuccessStatusCode) {
             // Check if the content type is JSON
             var isJson = response.Content.Headers.ContentType?.MediaType?.Equals("application/json", StringComparison.OrdinalIgnoreCase) ?? false;
-            
-            if (isJson)
-            {
-                try
-                {
+
+            if (isJson) {
+                try {
                     // Try to deserialize the error response
                     var errorStream = await response.Content.ReadAsStreamAsync();
                     var errorResponse = await JsonSerializer.DeserializeAsync(errorStream, PostGridJsonSerializerContext.Default.ErrorResponse, cancellationToken);
-                    
-                    if (errorResponse != null && errorResponse.Type != null)
-                    {
+
+                    if (errorResponse != null && errorResponse.Type != null) {
                         throw new PostGridException(
                             errorResponse.Type,
                             errorResponse.Message ?? "Unknown error",
                             response.StatusCode);
                     }
-                }
-                catch (JsonException)
-                {
+                } catch (JsonException) {
                     // If deserialization fails, we'll fall back to the default HttpRequestException
                 }
             }
-            
+
             // If we couldn't deserialize the error response, throw a standard HttpRequestException
             throw new HttpRequestException(
                 $"The request failed with status code {response.StatusCode} and was unable to be parsed.");
         }
-        
+
         // Get the response content as a stream
         var contentStream = await response.Content.ReadAsStreamAsync();
-        
+
         // Deserialize the response using the provided function
         return await deserializeFunc(contentStream, cancellationToken);
     }

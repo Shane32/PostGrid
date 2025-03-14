@@ -17,24 +17,21 @@ public static class ServiceCollectionExtensions
     {
         if (services == null)
             throw new ArgumentNullException(nameof(services));
-        
+
         // Add options
-        if (configureOptions != null)
-        {
+        if (configureOptions != null) {
             services.Configure(configureOptions);
-        }
-        else
-        {
+        } else {
             // Add empty options to ensure IOptions<PostGridOptions> is available
             services.Configure<PostGridOptions>(_ => { });
         }
-        
+
         // Add HttpClient
         services.AddHttpClient<IPostGridConnection, PostGridConnection>();
-        
+
         // Add PostGrid service
         services.AddTransient<PostGrid>();
-        
+
         return services;
     }
 }

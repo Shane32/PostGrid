@@ -9,7 +9,7 @@ public class CancelRequest
     /// The unique ID of the check to cancel.
     /// </summary>
     public required string Id { get; set; }
-    
+
     /// <summary>
     /// A note explaining the reason for cancellation.
     /// </summary>

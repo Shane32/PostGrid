@@ -34,7 +34,7 @@ public class PostGridContacts
     {
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Gets a contact from PostGrid by ID.
     /// </summary>
@@ -46,7 +46,7 @@ public class PostGridContacts
         var request = new GetRequest { Id = id };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Deletes a contact from PostGrid by ID.
     /// </summary>
@@ -58,7 +58,7 @@ public class PostGridContacts
         var request = new DeleteRequest { Id = id };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists contacts from PostGrid with pagination and search options.
     /// </summary>
@@ -69,16 +69,15 @@ public class PostGridContacts
     /// <returns>A task representing the asynchronous operation, containing the paginated list response from the API.</returns>
     public async Task<ListResponse<ContactResponse>> ListAsync(int? skip = null, int? limit = null, string? search = null, CancellationToken cancellationToken = default)
     {
-        var request = new ListRequest
-        {
+        var request = new ListRequest {
             Skip = skip,
             Limit = limit,
             Search = search
         };
-        
+
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists contacts from PostGrid with the specified request parameters.
     /// </summary>
@@ -89,7 +88,7 @@ public class PostGridContacts
     {
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists all contacts from PostGrid by making multiple API calls as needed.
     /// </summary>
@@ -101,19 +100,17 @@ public class PostGridContacts
     {
         int skip = 0;
         bool hasMore = true;
-        
-        while (hasMore)
-        {
+
+        while (hasMore) {
             var response = await ListAsync(skip, pageLimit, search, cancellationToken);
-            
+
             if (response.Data == null || response.Data.Length == 0)
                 break;
-                
-            foreach (var contact in response.Data)
-            {
+
+            foreach (var contact in response.Data) {
                 yield return contact;
             }
-            
+
             skip += response.Data.Length;
             hasMore = skip < response.TotalCount;
         }

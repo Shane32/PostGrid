@@ -19,21 +19,21 @@ public class PostGrid
     }
 
     private PostGridContacts? _contacts;
-    
+
     /// <summary>
     /// Gets the contacts API for creating and managing contacts.
     /// </summary>
     public PostGridContacts Contacts => _contacts ??= new PostGridContacts(_connection);
-    
+
     private PostGridBankAccounts? _bankAccounts;
-    
+
     /// <summary>
     /// Gets the bank accounts API for creating and managing bank accounts.
     /// </summary>
     public PostGridBankAccounts BankAccounts => _bankAccounts ??= new PostGridBankAccounts(_connection);
-    
+
     private PostGridChecks? _checks;
-    
+
     /// <summary>
     /// Gets the checks API for creating and managing checks.
     /// </summary>

@@ -28,7 +28,7 @@ public class PostGridChecks
     {
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Gets a check from PostGrid by ID.
     /// </summary>
@@ -40,7 +40,7 @@ public class PostGridChecks
         var request = new GetRequest { Id = id };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Deletes a check from PostGrid by ID.
     /// </summary>
@@ -52,7 +52,7 @@ public class PostGridChecks
         var request = new DeleteRequest { Id = id };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Cancels a check from PostGrid by ID.
     /// </summary>
@@ -65,7 +65,7 @@ public class PostGridChecks
         var request = new CancelRequest { Id = id, Note = note };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists checks from PostGrid with pagination and search options.
     /// </summary>
@@ -75,15 +75,14 @@ public class PostGridChecks
     /// <returns>A task representing the asynchronous operation, containing the paginated list response from the API.</returns>
     public async Task<ListResponse<CheckResponse>> ListAsync(int? skip = null, int? limit = null, CancellationToken cancellationToken = default)
     {
-        var request = new ListRequest
-        {
+        var request = new ListRequest {
             Skip = skip,
             Limit = limit,
         };
-        
+
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists checks from PostGrid with the specified request parameters.
     /// </summary>
@@ -94,7 +93,7 @@ public class PostGridChecks
     {
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists all checks from PostGrid by making multiple API calls as needed.
     /// </summary>
@@ -105,19 +104,17 @@ public class PostGridChecks
     {
         int skip = 0;
         bool hasMore = true;
-        
-        while (hasMore)
-        {
+
+        while (hasMore) {
             var response = await ListAsync(skip, pageLimit, cancellationToken);
-            
+
             if (response.Data == null || response.Data.Length == 0)
                 break;
-                
-            foreach (var check in response.Data)
-            {
+
+            foreach (var check in response.Data) {
                 yield return check;
             }
-            
+
             skip += response.Data.Length;
             hasMore = skip < response.TotalCount;
         }

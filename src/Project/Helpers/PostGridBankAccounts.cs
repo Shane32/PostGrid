@@ -28,7 +28,7 @@ public class PostGridBankAccounts
     {
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Gets a bank account from PostGrid by ID.
     /// </summary>
@@ -40,7 +40,7 @@ public class PostGridBankAccounts
         var request = new GetRequest { Id = id };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Deletes a bank account from PostGrid by ID.
     /// </summary>
@@ -52,7 +52,7 @@ public class PostGridBankAccounts
         var request = new DeleteRequest { Id = id };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists bank accounts from PostGrid with pagination and search options.
     /// </summary>
@@ -63,16 +63,15 @@ public class PostGridBankAccounts
     /// <returns>A task representing the asynchronous operation, containing the paginated list response from the API.</returns>
     public async Task<ListResponse<BankAccountResponse>> ListAsync(int? skip = null, int? limit = null, string? search = null, CancellationToken cancellationToken = default)
     {
-        var request = new ListRequest
-        {
+        var request = new ListRequest {
             Skip = skip,
             Limit = limit,
             Search = search
         };
-        
+
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists bank accounts from PostGrid with the specified request parameters.
     /// </summary>
@@ -83,7 +82,7 @@ public class PostGridBankAccounts
     {
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
-    
+
     /// <summary>
     /// Lists all bank accounts from PostGrid by making multiple API calls as needed.
     /// </summary>
@@ -95,19 +94,17 @@ public class PostGridBankAccounts
     {
         int skip = 0;
         bool hasMore = true;
-        
-        while (hasMore)
-        {
+
+        while (hasMore) {
             var response = await ListAsync(skip, pageLimit, search, cancellationToken);
-            
+
             if (response.Data == null || response.Data.Length == 0)
                 break;
-                
-            foreach (var bankAccount in response.Data)
-            {
+
+            foreach (var bankAccount in response.Data) {
                 yield return bankAccount;
             }
-            
+
             skip += response.Data.Length;
             hasMore = skip < response.TotalCount;
         }

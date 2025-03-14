@@ -9,24 +9,19 @@ async Task RunPostGridExampleAsync()
 {
     // Set up dependency injection
     var services = new ServiceCollection();
-    
+
     // Add PostGrid services
-    services.AddPostGrid(options =>
-    {
-        options.ApiKey = "your_api_key_here"; // Replace with your actual API key
-    });
-    
+    services.AddPostGrid(options => options.ApiKey = "your_api_key_here");
+
     // Build the service provider
     var serviceProvider = services.BuildServiceProvider();
-    
+
     // Get the PostGrid service
     var postGrid = serviceProvider.GetRequiredService<PostGrid>();
-    
-    try
-    {
+
+    try {
         // Create a new contact
-        var request = new CreateRequest
-        {
+        var request = new CreateRequest {
             FirstName = "Kevin",
             CompanyName = "PostGrid",
             AddressLine1 = "20-20 bay st",
@@ -40,22 +35,20 @@ async Task RunPostGridExampleAsync()
             JobTitle = "Manager",
             Description = "Kevin Smith's contact information"
         };
-        
+
         // Add metadata
         request.Metadata = new Dictionary<string, string>
         {
             { "friend", "no" }
         };
-        
+
         Console.WriteLine("Creating contact...");
         var response = await postGrid.Contacts.CreateAsync(request);
-        
+
         // Display the response
         Console.WriteLine($"Contact created with ID: {response.Id}");
         Console.WriteLine($"Status: {response.AddressStatus}");
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
         Console.WriteLine($"Error: {ex.Message}");
     }
 }
