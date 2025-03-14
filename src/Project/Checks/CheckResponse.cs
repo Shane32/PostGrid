@@ -20,12 +20,12 @@ public class CheckResponse
     /// <summary>
     /// The recipient
     /// </summary>
-    public required Contacts.ContactResponse To { get; set; }
+    public required Contacts.ContactBaseResponse To { get; set; }
 
     /// <summary>
     /// The sender
     /// </summary>
-    public required Contacts.ContactResponse From { get; set; }
+    public required Contacts.ContactBaseResponse From { get; set; }
 
     /// <summary>
     /// See Intelligent-Mail Tracking

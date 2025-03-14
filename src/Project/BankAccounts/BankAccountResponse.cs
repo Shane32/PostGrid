@@ -42,6 +42,7 @@ public class BankAccountResponse
     /// </summary>
     public required string BankCountryCode { get; set; }
 
+    /*
     /// <summary>
     /// Transit number for checks associated with this account (CA only)
     /// </summary>
@@ -51,16 +52,12 @@ public class BankAccountResponse
     /// Also referred to as the Financial Institution Number (CA only)
     /// </summary>
     public required string RouteNumber { get; set; }
+    */
 
     /// <summary>
     /// The bank account routing number (US only)
     /// </summary>
     public required string RoutingNumber { get; set; }
-
-    /// <summary>
-    /// The account number, only used when creating the account
-    /// </summary>
-    public required string AccountNumber { get; set; }
 
     /// <summary>
     /// Returned in GET requests in place of accountNumber

@@ -79,5 +79,8 @@ public class App
         Console.WriteLine($"Check created with ID: {checkResponse.Id}");
         Console.WriteLine($"Status: {checkResponse.Status}");
         Console.WriteLine($"Preview URL: {checkResponse.Url}");
+        Console.WriteLine();
+        var pretty = System.Text.Json.JsonSerializer.Serialize(checkResponse, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        Console.WriteLine(pretty);
     }
 }
