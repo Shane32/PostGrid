@@ -82,7 +82,7 @@ public partial class PostGridConnection
 
             // Create a request factory function
             Func<HttpRequestMessage> requestFactory = () => {
-                var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/print-mail/v1/cheques");
+                var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/cheques");
                 newRequest.Content = content;
                 return newRequest;
             };
@@ -154,7 +154,7 @@ public partial class PostGridConnection
 
             // Create a request factory function
             Func<HttpRequestMessage> requestFactory = () => {
-                var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/print-mail/v1/cheques");
+                var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/cheques");
                 newRequest.Content = new FormUrlEncodedContent(formData);
                 return newRequest;
             };
@@ -175,7 +175,7 @@ public partial class PostGridConnection
 
         // Create a request factory function
         Func<HttpRequestMessage> requestFactory =
-            () => new HttpRequestMessage(HttpMethod.Get, $"{_options.BaseUrl}/print-mail/v1/cheques/{request.Id}");
+            () => new HttpRequestMessage(HttpMethod.Get, $"{_options.BaseUrl}/cheques/{request.Id}");
 
         // Use the generic SendRequestAsync method with JsonTypeInfo
         return await SendRequestAsync(requestFactory, PostGridJsonSerializerContext.Default.CheckResponse, cancellationToken);
@@ -192,7 +192,7 @@ public partial class PostGridConnection
 
         // Create a request factory function
         Func<HttpRequestMessage> requestFactory =
-            () => new HttpRequestMessage(HttpMethod.Delete, $"{_options.BaseUrl}/print-mail/v1/cheques/{request.Id}");
+            () => new HttpRequestMessage(HttpMethod.Delete, $"{_options.BaseUrl}/cheques/{request.Id}");
 
         // Use the generic SendRequestAsync method with JsonTypeInfo
         return await SendRequestAsync(requestFactory, PostGridJsonSerializerContext.Default.CheckResponse, cancellationToken);
@@ -216,7 +216,7 @@ public partial class PostGridConnection
 
         // Create a request factory function
         Func<HttpRequestMessage> requestFactory = () => {
-            var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/print-mail/v1/cheques/{request.Id}/cancellation");
+            var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/cheques/{request.Id}/cancellation");
             newRequest.Content = new FormUrlEncodedContent(formData);
             return newRequest;
         };
@@ -244,7 +244,7 @@ public partial class PostGridConnection
 
         // Create a request factory function
         Func<HttpRequestMessage> requestFactory =
-            () => new HttpRequestMessage(HttpMethod.Get, $"{_options.BaseUrl}/print-mail/v1/cheques{queryString}");
+            () => new HttpRequestMessage(HttpMethod.Get, $"{_options.BaseUrl}/cheques{queryString}");
 
         // Use the generic SendRequestAsync method with JsonTypeInfo
         return await SendRequestAsync(requestFactory, PostGridJsonSerializerContext.Default.ListResponseCheckResponse, cancellationToken);

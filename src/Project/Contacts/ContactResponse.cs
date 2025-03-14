@@ -8,12 +8,12 @@ public class ContactResponse
     /// <summary>
     /// A unique ID prefixed with contact_
     /// </summary>
-    public string? Id { get; set; }
+    public required string Id { get; set; }
 
     /// <summary>
     /// true if this is a live mode contact else false
     /// </summary>
-    public bool Live { get; set; }
+    public required bool Live { get; set; }
 
     /// <summary>
     /// Optional line describing the contact
@@ -23,7 +23,7 @@ public class ContactResponse
     /// <summary>
     /// First line of address
     /// </summary>
-    public string? AddressLine1 { get; set; }
+    public required string AddressLine1 { get; set; }
 
     /// <summary>
     /// Second line of address
@@ -88,15 +88,15 @@ public class ContactResponse
     /// <summary>
     /// Skip address correction and verification
     /// </summary>
-    public bool SkipVerification { get; set; }
+    public required bool SkipVerification { get; set; }
 
     /// <summary>
     /// Override the given address verification status
     /// </summary>
-    public bool ForceVerifiedStatus { get; set; }
+    public required bool ForceVerifiedStatus { get; set; }
 
     /// <summary>
     /// Hide contact details apart from final print
     /// </summary>
-    public bool Secret { get; set; }
+    public required bool Secret { get; set; }
 }

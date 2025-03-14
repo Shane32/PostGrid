@@ -1,6 +1,4 @@
-using System.Net.Http.Headers;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Microsoft.Extensions.Options;
 
@@ -21,15 +19,18 @@ public partial class PostGridConnection : IPostGridConnection
     /// <param name="options">The options for configuring the PostGrid API client.</param>
     public PostGridConnection(HttpClient httpClient, IOptions<PostGridOptions> options)
     {
-        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+        _httpClient = httpClient;
+        _options = options.Value;
     }
 
     /// <inheritdoc />
     public virtual ValueTask<string> GetApiKey(CancellationToken cancellationToken = default)
     {
-        return new ValueTask<string>(_options.ApiKey
-            ?? throw new InvalidOperationException("The API key is not configured."));
+        var apiKey = _options.ApiKey;
+        if (apiKey == null || string.IsNullOrWhiteSpace(apiKey)) {
+            throw new InvalidOperationException("The API key is not configured.");
+        }
+        return new ValueTask<string>(apiKey);
     }
 
     /// <summary>
@@ -115,7 +116,8 @@ public partial class PostGridConnection : IPostGridConnection
                         throw new PostGridException(
                             errorResponse.Type,
                             errorResponse.Message ?? "Unknown error",
-                            response.StatusCode);
+                            response.StatusCode,
+                            null);
                     }
                 } catch (JsonException) {
                     // If deserialization fails, we'll fall back to the default HttpRequestException
@@ -146,9 +148,22 @@ public partial class PostGridConnection : IPostGridConnection
     /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
     private Task<T> SendRequestAsync<T>(Func<HttpRequestMessage> requestFactory, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken = default)
     {
-        return SendRequestAsync(requestFactory, async (stream, token) =>
-            await JsonSerializer.DeserializeAsync(stream, jsonTypeInfo, token)
-                ?? throw new JsonException("The response returned a null object."),
+        return SendRequestAsync(
+            requestFactory,
+            async (stream, token) => {
+                var memoryStream = new MemoryStream();
+#if NET6_0_OR_GREATER
+                await stream.CopyToAsync(memoryStream, token);
+#else
+                await stream.CopyToAsync(memoryStream);
+#endif
+                memoryStream.Position = 0;
+                var stringData = await new StreamReader(memoryStream).ReadToEndAsync();
+                Console.WriteLine("Parsing: " + stringData);
+                memoryStream.Position = 0;
+                return await JsonSerializer.DeserializeAsync(memoryStream, jsonTypeInfo, token)
+                    ?? throw new JsonException("The response returned a null object.");
+            },
             cancellationToken);
     }
 }

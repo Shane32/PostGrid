@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.0-preview</VersionPrefix>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>11</LangVersion>
     <Copyright>Shane Krueger</Copyright>
     <Authors>Shane Krueger</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -18,6 +18,10 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IsPackable>true</IsPackable>
     <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>8.0-recmomended</AnalysisLevel>
+    <RootNamespace>Shane32.PostGrid</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
 </Project>

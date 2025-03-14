@@ -1,54 +1,25 @@
 using Microsoft.Extensions.DependencyInjection;
-using Shane32.PostGrid;
-using Shane32.PostGrid.Contacts;
+using Microsoft.Extensions.Hosting;
+using Shane32.ConsoleDI;
 
-// Example of how to use the PostGrid API client
-await RunPostGridExampleAsync();
+namespace ConsoleApp;
 
-async Task RunPostGridExampleAsync()
+public class Program
 {
-    // Set up dependency injection
-    var services = new ServiceCollection();
+    public static async Task Main(string[] args)
+        => await ConsoleHost.RunAsync<App>(args, CreateHostBuilder, app => app.RunAsync());
 
-    // Add PostGrid services
-    services.AddPostGrid(options => options.ApiKey = "your_api_key_here");
+    // this function is necessary for Entity Framework Core tools to perform migrations, etc
+    // do not change signature!!
+    public static IHostBuilder CreateHostBuilder(string[] args)
+        => ConsoleHost.CreateHostBuilder(args, ConfigureServices);
 
-    // Build the service provider
-    var serviceProvider = services.BuildServiceProvider();
+    private static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
+    {
+        // Add PostGrid services using configuration
+        services.AddPostGrid(context.Configuration.GetSection("PostGrid"));
 
-    // Get the PostGrid service
-    var postGrid = serviceProvider.GetRequiredService<PostGrid>();
-
-    try {
-        // Create a new contact
-        var request = new CreateRequest {
-            FirstName = "Kevin",
-            CompanyName = "PostGrid",
-            AddressLine1 = "20-20 bay st",
-            AddressLine2 = "floor 11",
-            City = "toronto",
-            ProvinceOrState = "ON",
-            PostalOrZip = "M5J 2N8",
-            CountryCode = "CA",
-            Email = "kevinsmith@postgrid.com",
-            PhoneNumber = "8885550100",
-            JobTitle = "Manager",
-            Description = "Kevin Smith's contact information"
-        };
-
-        // Add metadata
-        request.Metadata = new Dictionary<string, string>
-        {
-            { "friend", "no" }
-        };
-
-        Console.WriteLine("Creating contact...");
-        var response = await postGrid.Contacts.CreateAsync(request);
-
-        // Display the response
-        Console.WriteLine($"Contact created with ID: {response.Id}");
-        Console.WriteLine($"Status: {response.AddressStatus}");
-    } catch (Exception ex) {
-        Console.WriteLine($"Error: {ex.Message}");
+        // Add the App as a service
+        services.AddTransient<App>();
     }
 }

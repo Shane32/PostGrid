@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Shane32.PostGrid.Checks;
 
 /// <summary>
@@ -8,22 +10,22 @@ public class CheckResponse
     /// <summary>
     /// A unique ID prefixed with check_
     /// </summary>
-    public string? Id { get; set; }
+    public required string Id { get; set; }
 
     /// <summary>
     /// See Tracking
     /// </summary>
-    public string? Status { get; set; }
+    public required string Status { get; set; }
 
     /// <summary>
     /// The recipient
     /// </summary>
-    public Contacts.ContactResponse? To { get; set; }
+    public required Contacts.ContactResponse To { get; set; }
 
     /// <summary>
     /// The sender
     /// </summary>
-    public Contacts.ContactResponse? From { get; set; }
+    public required Contacts.ContactResponse From { get; set; }
 
     /// <summary>
     /// See Intelligent-Mail Tracking
@@ -33,7 +35,7 @@ public class CheckResponse
     /// <summary>
     /// true if this is a live mode check else false
     /// </summary>
-    public bool Live { get; set; }
+    public required bool Live { get; set; }
 
     /// <summary>
     /// Signed link to a preview of this letter order
@@ -48,22 +50,22 @@ public class CheckResponse
     /// <summary>
     /// Date when the check will be sent
     /// </summary>
-    public DateTimeOffset SendDate { get; set; }
+    public required DateTimeOffset SendDate { get; set; }
 
     /// <summary>
     /// A Bank Account ID, the drawee
     /// </summary>
-    public string? BankAccount { get; set; }
+    public required string BankAccount { get; set; }
 
     /// <summary>
     /// 3-letter code representing currency of amount
     /// </summary>
-    public string? CurrencyCode { get; set; }
+    public required string CurrencyCode { get; set; }
 
     /// <summary>
     /// The check amount as an integer representing cents
     /// </summary>
-    public int Amount { get; set; }
+    public required int Amount { get; set; }
 
     /// <summary>
     /// An optional memo to be printed on the check (Max 40 characters long)
@@ -78,7 +80,7 @@ public class CheckResponse
     /// <summary>
     /// The check number
     /// </summary>
-    public int Number { get; set; }
+    public required int Number { get; set; }
 
     /// <summary>
     /// An optional (HTML) message to print on the same page as the check
@@ -88,6 +90,7 @@ public class CheckResponse
     /// <summary>
     /// The raw HTML for the attached letter, if any
     /// </summary>
+    [JsonPropertyName("letterHTML")]
     public string? LetterHTML { get; set; }
 
     /// <summary>
@@ -98,6 +101,7 @@ public class CheckResponse
     /// <summary>
     /// A URL pointing to the original PDF of the attached letter
     /// </summary>
+    [JsonPropertyName("letterUploadedPDF")]
     public string? LetterUploadedPDF { get; set; }
 
     /// <summary>
