@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Shane32.PostGrid;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -7,36 +6,8 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// Extension methods for setting up PostGrid services in an <see cref="IServiceCollection"/>.
 /// </summary>
-public static class ServiceCollectionExtensions
+public static class PostGridExtensions
 {
-    /// <summary>
-    /// Adds PostGrid services to the specified <see cref="IServiceCollection"/>.
-    /// </summary>
-    /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
-    /// <param name="configureOptions">A callback to configure the <see cref="PostGridOptions"/>. This is optional.</param>
-    /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-    public static IServiceCollection AddPostGrid(this IServiceCollection services, Action<PostGridOptions>? configureOptions = null)
-    {
-        if (services == null)
-            throw new ArgumentNullException(nameof(services));
-
-        // Add options
-        if (configureOptions != null) {
-            services.Configure(configureOptions);
-        } else {
-            // Add empty options to ensure IOptions<PostGridOptions> is available
-            services.AddOptions<PostGridOptions>();
-        }
-
-        // Add HttpClient
-        services.AddHttpClient<IPostGridConnection, PostGridConnection>();
-
-        // Add PostGrid service
-        services.AddTransient<PostGrid>();
-
-        return services;
-    }
-
     /// <summary>
     /// Adds PostGrid services to the specified <see cref="IServiceCollection"/> using configuration.
     /// </summary>
@@ -51,7 +22,48 @@ public static class ServiceCollectionExtensions
             throw new ArgumentNullException(nameof(configuration));
 
         // Configure options from the configuration
-        services.Configure<PostGridOptions>(configuration);
+        services.Configure<PostGridOptions>(options =>
+        {
+            options.ApiKey = configuration["ApiKey"]!;
+            
+            var baseUrl = configuration["BaseUrl"];
+            if (baseUrl != null && !string.IsNullOrEmpty(baseUrl))
+                options.BaseUrl = baseUrl;
+            
+            if (int.TryParse(configuration["MaxRetryAttempts"], out var maxRetryAttempts))
+                options.MaxRetryAttempts = maxRetryAttempts;
+            
+            if (int.TryParse(configuration["DefaultRetryDelayMs"], out var defaultRetryDelayMs))
+                options.DefaultRetryDelayMs = defaultRetryDelayMs;
+        });
+
+        // Add HttpClient
+        services.AddHttpClient<IPostGridConnection, PostGridConnection>();
+
+        // Add PostGrid service
+        services.AddTransient<PostGrid>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds PostGrid services to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+    /// <param name="configureOptions">A callback to configure the <see cref="PostGridOptions"/>. This is optional.</param>
+    /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
+    public static IServiceCollection AddPostGrid(this IServiceCollection services, Action<PostGridOptions>? configureOptions)
+    {
+        if (services == null)
+            throw new ArgumentNullException(nameof(services));
+
+        // Add options
+        if (configureOptions != null) {
+            services.Configure(configureOptions);
+        } else {
+            // Add empty options to ensure IOptions<PostGridOptions> is available
+            services.AddOptions<PostGridOptions>();
+        }
 
         // Add HttpClient
         services.AddHttpClient<IPostGridConnection, PostGridConnection>();

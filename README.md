@@ -2,7 +2,13 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Shane32.PostGrid.svg)](https://www.nuget.org/packages/Shane32.PostGrid) [![Coverage Status](https://coveralls.io/repos/github/Shane32/PostGrid/badge.svg?branch=master)](https://coveralls.io/github/Shane32/PostGrid?branch=master)
 
-This is a SDK for the PostGrid API. It is not endorsed or maintained by PostGrid.
+This is a SDK for the PostGrid API. It is not endorsed or maintained by PostGrid. This implementation contains code to access the following parts of the PostGrid API:
+
+- Contacts
+- BankAccounts (for US banks)
+- Checks
+
+It also has an optional retry mechanism for rate-limited requests and supports NativeAOT.
 
 ## Installation
 
