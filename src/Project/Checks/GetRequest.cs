@@ -8,5 +8,9 @@ public class GetRequest
     /// <summary>
     /// The unique ID of the check to retrieve.
     /// </summary>
-    public required string Id { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string Id { get; set; } = null!;
 }

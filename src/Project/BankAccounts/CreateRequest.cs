@@ -8,22 +8,38 @@ public class CreateRequest
     /// <summary>
     /// The name of the bank.
     /// </summary>
-    public required string BankName { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string BankName { get; set; } = null!;
 
     /// <summary>
     /// The account number, only used when creating the account.
     /// </summary>
-    public required string AccountNumber { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string AccountNumber { get; set; } = null!;
 
     /// <summary>
     /// The bank account's routing number.
     /// </summary>
-    public required string RoutingNumber { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string RoutingNumber { get; set; } = null!;
 
     /// <summary>
     /// The corresponding country code for the bank. Must be either CA or US.
     /// </summary>
-    public required string BankCountryCode { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string BankCountryCode { get; set; } = null!;
 
     /// <summary>
     /// An image containing a signature.

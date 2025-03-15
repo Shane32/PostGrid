@@ -8,33 +8,58 @@ public class CreateRequest
     /// <summary>
     /// An idempotency key to prevent duplicate requests.
     /// This value will be sent as the 'Idempotency-Key' header.
+    /// Recommended that this is a random <see cref="Guid"/>.
     /// </summary>
-    public required Guid IdempotencyKey { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string IdempotencyKey { get; set; } = null!;
 
     /// <summary>
     /// The id or contact object of the receiver. You can either pass a contact object or a contact's id.
     /// </summary>
-    public required string To { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string To { get; set; } = null!;
 
     /// <summary>
     /// The id or contact object of the sender. You can either pass a contact object or a contact's id.
     /// </summary>
-    public required string From { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string From { get; set; } = null!;
 
     /// <summary>
     /// The id for which bank account will be used for the check.
     /// </summary>
-    public required string BankAccount { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string BankAccount { get; set; } = null!;
 
     /// <summary>
     /// The amount for which the check is issued for. Must be specified in cents.
     /// </summary>
-    public required int Amount { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        int Amount { get; set; }
 
     /// <summary>
     /// The check number.
     /// </summary>
-    public required int Number { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        int Number { get; set; }
 
     /// <summary>
     /// An optional parameter that adds a blank page insert to the check in order to redirect its destination.

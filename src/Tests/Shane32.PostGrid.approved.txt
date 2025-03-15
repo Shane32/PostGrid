@@ -28,8 +28,6 @@ namespace Shane32.PostGrid.BankAccounts
     }
     public class CreateRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public CreateRequest() { }
         public string AccountNumber { get; set; }
         public string BankCountryCode { get; set; }
@@ -45,15 +43,11 @@ namespace Shane32.PostGrid.BankAccounts
     }
     public class DeleteRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public DeleteRequest() { }
         public string Id { get; set; }
     }
     public class GetRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
     }
@@ -69,8 +63,6 @@ namespace Shane32.PostGrid.Checks
 {
     public class CancelRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public CancelRequest() { }
         public string Id { get; set; }
         public string? Note { get; set; }
@@ -107,8 +99,6 @@ namespace Shane32.PostGrid.Checks
     }
     public class CreateRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public CreateRequest() { }
         public int Amount { get; set; }
         public string BankAccount { get; set; }
@@ -117,7 +107,7 @@ namespace Shane32.PostGrid.Checks
         public bool? Express { get; set; }
         public string? ExtraService { get; set; }
         public string From { get; set; }
-        public System.Guid IdempotencyKey { get; set; }
+        public string IdempotencyKey { get; set; }
         public string? LetterHTML { get; set; }
         public byte[]? LetterPDF { get; set; }
         public string? LetterPDFContentType { get; set; }
@@ -135,15 +125,11 @@ namespace Shane32.PostGrid.Checks
     }
     public class DeleteRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public DeleteRequest() { }
         public string Id { get; set; }
     }
     public class GetRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
     }
@@ -189,8 +175,6 @@ namespace Shane32.PostGrid.Contacts
     }
     public class CreateRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public CreateRequest() { }
         public string AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
@@ -212,15 +196,11 @@ namespace Shane32.PostGrid.Contacts
     }
     public class DeleteRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public DeleteRequest() { }
         public string Id { get; set; }
     }
     public class GetRequest
     {
-        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
-            "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
     }

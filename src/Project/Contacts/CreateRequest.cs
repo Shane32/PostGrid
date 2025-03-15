@@ -26,7 +26,11 @@ public class CreateRequest
     /// The contact's first address line.
     /// The full address can be provided here, which will be automatically parsed to the other address fields.
     /// </summary>
-    public required string AddressLine1 { get; set; }
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string AddressLine1 { get; set; } = null!;
 
     /// <summary>
     /// The contact's second address line.
@@ -66,7 +70,11 @@ public class CreateRequest
     /// <summary>
     /// The ISO 3611-1 country code of the contact's address. Defaults to CA.
     /// </summary>
-    public required string CountryCode { get; set; } = "CA";
+    public
+#if NET7_0_OR_GREATER
+        required
+#endif
+        string CountryCode { get; set; } = "CA";
 
     /// <summary>
     /// A description for the contact.

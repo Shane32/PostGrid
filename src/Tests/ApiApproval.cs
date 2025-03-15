@@ -7,7 +7,11 @@ namespace Tests.ApiTests;
 /// </summary>
 public class ApiApprovalTests
 {
+#if NETFRAMEWORK
     [Theory]
+#else
+    [Theory(Skip = "Only test .NET Standard 2.0 project")]
+#endif
     [InlineData(typeof(PostGrid))]
     public void PublicApi(Type type)
     {

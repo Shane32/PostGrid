@@ -81,7 +81,7 @@ public class App
             Number = 1001, // Check number
             Memo = "Example payment",
             Message = "<p>Thank you for your business!</p>",
-            IdempotencyKey = Guid.NewGuid() // Add a unique idempotency key
+            IdempotencyKey = Guid.NewGuid().ToString() // Add a unique idempotency key
         };
 
         Console.WriteLine("Creating check...");
