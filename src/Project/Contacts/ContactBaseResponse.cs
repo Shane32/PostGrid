@@ -26,6 +26,11 @@ public class ContactBaseResponse
     public string? AddressLine2 { get; set; }
 
     /// <summary>
+    /// City of address
+    /// </summary>
+    public string? City { get; set; }
+
+    /// <summary>
     /// Province or state of address
     /// </summary>
     public string? ProvinceOrState { get; set; }
@@ -84,4 +89,14 @@ public class ContactBaseResponse
     /// Hide contact details apart from final print
     /// </summary>
     public required bool Secret { get; set; }
+
+    /// <summary>
+    /// The date and time when the contact was created
+    /// </summary>
+    public DateTimeOffset CreatedAt { get; set; }
+
+    /// <summary>
+    /// The date and time when the contact was last updated
+    /// </summary>
+    public DateTimeOffset UpdatedAt { get; set; }
 }

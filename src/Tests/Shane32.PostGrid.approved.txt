@@ -28,6 +28,8 @@ namespace Shane32.PostGrid.BankAccounts
     }
     public class CreateRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public CreateRequest() { }
         public string AccountNumber { get; set; }
         public string BankCountryCode { get; set; }
@@ -43,11 +45,15 @@ namespace Shane32.PostGrid.BankAccounts
     }
     public class DeleteRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public DeleteRequest() { }
         public string Id { get; set; }
     }
     public class GetRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
     }
@@ -63,6 +69,8 @@ namespace Shane32.PostGrid.Checks
 {
     public class CancelRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public CancelRequest() { }
         public string Id { get; set; }
         public string? Note { get; set; }
@@ -99,6 +107,8 @@ namespace Shane32.PostGrid.Checks
     }
     public class CreateRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public CreateRequest() { }
         public int Amount { get; set; }
         public string BankAccount { get; set; }
@@ -125,11 +135,15 @@ namespace Shane32.PostGrid.Checks
     }
     public class DeleteRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public DeleteRequest() { }
         public string Id { get; set; }
     }
     public class GetRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
     }
@@ -150,8 +164,10 @@ namespace Shane32.PostGrid.Contacts
         public string AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
         public string? AddressStatus { get; set; }
+        public string? City { get; set; }
         public string? CompanyName { get; set; }
         public string? CountryCode { get; set; }
+        public System.DateTimeOffset CreatedAt { get; set; }
         public string? Description { get; set; }
         public string? Email { get; set; }
         public string? FirstName { get; set; }
@@ -163,6 +179,7 @@ namespace Shane32.PostGrid.Contacts
         public string? PostalOrZip { get; set; }
         public string? ProvinceOrState { get; set; }
         public bool Secret { get; set; }
+        public System.DateTimeOffset UpdatedAt { get; set; }
     }
     public class ContactResponse : Shane32.PostGrid.Contacts.ContactBaseResponse
     {
@@ -175,6 +192,8 @@ namespace Shane32.PostGrid.Contacts
     }
     public class CreateRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public CreateRequest() { }
         public string AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
@@ -196,11 +215,15 @@ namespace Shane32.PostGrid.Contacts
     }
     public class DeleteRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public DeleteRequest() { }
         public string Id { get; set; }
     }
     public class GetRequest
     {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
     }
@@ -306,7 +329,7 @@ namespace Shane32.PostGrid
     public class PostGridException : System.Net.Http.HttpRequestException
     {
         public PostGridException(string type, string message, System.Net.HttpStatusCode? statusCode, System.Exception? inner) { }
-        public System.Net.HttpStatusCode? StatusCode { get; }
+        public new System.Net.HttpStatusCode? StatusCode { get; }
         public string Type { get; }
     }
     public class PostGridOptions
