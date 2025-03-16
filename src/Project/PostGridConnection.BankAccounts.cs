@@ -115,7 +115,7 @@ public partial class PostGridConnection
     }
 
     /// <inheritdoc />
-    public async Task<BankAccountResponse> ExecuteAsync(DeleteRequest request, CancellationToken cancellationToken = default)
+    public async Task ExecuteAsync(DeleteRequest request, CancellationToken cancellationToken = default)
     {
         if (request == null)
             throw new ArgumentNullException(nameof(request));
@@ -128,7 +128,7 @@ public partial class PostGridConnection
             () => new HttpRequestMessage(HttpMethod.Delete, $"{_options.BaseUrl}/bank_accounts/{request.Id}");
 
         // Use the generic SendRequestAsync method with JsonTypeInfo
-        return await SendRequestAsync(requestFactory, PostGridJsonSerializerContext.Default.BankAccountResponse, cancellationToken);
+        await SendRequestAsync(requestFactory, PostGridJsonSerializerContext.Default.DeleteResponse, cancellationToken);
     }
 
     /// <inheritdoc />

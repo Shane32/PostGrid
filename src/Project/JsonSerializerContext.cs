@@ -18,6 +18,7 @@ namespace Shane32.PostGrid;
 [JsonSerializable(typeof(ListResponse<BankAccountResponse>))]
 [JsonSerializable(typeof(CheckResponse))]
 [JsonSerializable(typeof(ListResponse<CheckResponse>))]
+[JsonSerializable(typeof(DeleteResponse))]
 internal partial class PostGridJsonSerializerContext : JsonSerializerContext
 {
 }

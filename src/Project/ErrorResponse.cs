@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Shane32.PostGrid;
 
 /// <summary>
@@ -8,12 +6,7 @@ namespace Shane32.PostGrid;
 internal class ErrorResponse
 {
     /// <summary>
-    /// Gets or sets the type of the error.
+    /// Gets or sets the error details.
     /// </summary>
-    public string? Type { get; set; }
-
-    /// <summary>
-    /// Gets or sets the error message.
-    /// </summary>
-    public string? Message { get; set; }
+    public ErrorDetails? Error { get; set; }
 }

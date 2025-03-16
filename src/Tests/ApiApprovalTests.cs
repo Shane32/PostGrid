@@ -20,9 +20,7 @@ public class ApiApprovalTests
             UseDenyNamespacePrefixesForExtensionMethods = false,
         }) + Environment.NewLine;
 
-        publicApi.ShouldMatchApproved(options => {
-            options.NoDiff();
-            options.WithFilenameGenerator((testMethodInfo, discriminator, fileType, fileExtension) => $"{type.Assembly.GetName().Name}.{fileType}.{fileExtension}");
-        });
+        publicApi.ShouldMatchApproved(options => options.NoDiff());
+        //options.WithFilenameGenerator((testMethodInfo, discriminator, fileType, fileExtension) => $"{type.Assembly.GetName().Name}.ApiApprovals.{fileType}.{fileExtension}");
     }
 }

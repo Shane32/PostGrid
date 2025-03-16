@@ -46,11 +46,11 @@ public class PostGridBankAccounts
     /// </summary>
     /// <param name="id">The ID of the bank account to delete.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A task representing the asynchronous operation, containing the response from the API.</returns>
-    public async Task<BankAccountResponse> DeleteAsync(string id, CancellationToken cancellationToken = default)
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task DeleteAsync(string id, CancellationToken cancellationToken = default)
     {
         var request = new DeleteRequest { Id = id };
-        return await _connection.ExecuteAsync(request, cancellationToken);
+        await _connection.ExecuteAsync(request, cancellationToken);
     }
 
     /// <summary>
