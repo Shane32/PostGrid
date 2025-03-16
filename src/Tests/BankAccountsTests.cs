@@ -47,6 +47,8 @@ public class BankAccountsTests : PostGridTestBase
         result.Live.ShouldBeFalse();
         result.Metadata.ShouldNotBeNull();
         result.Metadata["type"].ShouldBe("checking");
+        result.CreatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T15:22:33.726Z"));
+        result.UpdatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T15:22:33.726Z"));
 
         // Local function to verify the request and return a response
         async Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -69,7 +71,7 @@ public class BankAccountsTests : PostGridTestBase
 
             // Set up the response
             var response = """
-                {"id":"bank_123456789","object":"bank_account","live":false,"bankName":"Test Bank","bankPrimaryLine":"123 Main St","bankSecondaryLine":"New York, NY 10001","bankCountryCode":"US","routingNumber":"021000021","accountNumberLast4":"6789","accountNumberAndIDSHA256":"abc123hash456def789","description":"Test bank account","metadata":{"type":"checking"}}
+                {"id":"bank_123456789","object":"bank_account","live":false,"accountNumberAndIDSHA256":"abc123hash456def789","accountNumberLast4":"6789","bankCountryCode":"US","bankName":"Test Bank","bankPrimaryLine":"123 Main St","bankSecondaryLine":"New York, NY 10001","description":"Test bank account","metadata":{"type":"checking"},"routingNumber":"021000021","signatureText":"John Doe","createdAt":"2025-03-16T15:22:33.726Z","updatedAt":"2025-03-16T15:22:33.726Z"}
                 """;
 
             // Return the response
@@ -107,6 +109,8 @@ public class BankAccountsTests : PostGridTestBase
         result.Live.ShouldBeFalse();
         result.Metadata.ShouldNotBeNull();
         result.Metadata["type"].ShouldBe("checking");
+        result.CreatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T15:22:33.726Z"));
+        result.UpdatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T15:22:33.726Z"));
 
         // Local function to verify the request and return a response
         Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -122,7 +126,7 @@ public class BankAccountsTests : PostGridTestBase
 
             // Set up the response
             var response = """
-                {"id":"bank_123456789","object":"bank_account","live":false,"bankName":"Test Bank","bankPrimaryLine":"123 Main St","bankSecondaryLine":"New York, NY 10001","bankCountryCode":"US","routingNumber":"021000021","accountNumberLast4":"6789","accountNumberAndIDSHA256":"abc123hash456def789","description":"Test bank account","metadata":{"type":"checking"}}
+                {"id":"bank_123456789","object":"bank_account","live":false,"accountNumberAndIDSHA256":"abc123hash456def789","accountNumberLast4":"6789","bankCountryCode":"US","bankName":"Test Bank","bankPrimaryLine":"123 Main St","bankSecondaryLine":"New York, NY 10001","description":"Test bank account","metadata":{"type":"checking"},"routingNumber":"021000021","signatureText":"John Doe","createdAt":"2025-03-16T15:22:33.726Z","updatedAt":"2025-03-16T15:22:33.726Z"}
                 """;
 
             // Return the response
@@ -189,7 +193,7 @@ public class BankAccountsTests : PostGridTestBase
         
         // Verify the exception details
         exception.ShouldNotBeNull();
-        exception.Message.ShouldBe("Bank account with ID bank_123456789 was not found.");
+        exception.Message.ShouldBe("Could not find bank account with id bank_account_id");
 
         // Local function to verify the request and return a response
         Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -205,7 +209,7 @@ public class BankAccountsTests : PostGridTestBase
 
             // Set up the error response
             var response = """
-                {"object":"error","error":{"type":"bank_account_not_found_error","message":"Bank account with ID bank_123456789 was not found."}}
+                {"object":"error","error":{"type":"bank_account_not_found_error","message":"Could not find bank account with id bank_account_id"}}
                 """;
 
             // Return the response with a 404 Not Found status code
@@ -256,6 +260,8 @@ public class BankAccountsTests : PostGridTestBase
         bankAccount.Live.ShouldBeFalse();
         bankAccount.Metadata.ShouldNotBeNull();
         bankAccount.Metadata["type"].ShouldBe("checking");
+        bankAccount.CreatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T15:22:33.726Z"));
+        bankAccount.UpdatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T15:22:33.726Z"));
 
         // Local function to verify the request and return a response
         Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -271,7 +277,7 @@ public class BankAccountsTests : PostGridTestBase
 
             // Set up the response
             var response = """
-                {"object":"list","limit":10,"skip":0,"totalCount":1,"data":[{"id":"bank_123456789","object":"bank_account","live":false,"bankName":"Test Bank","bankPrimaryLine":"123 Main St","bankSecondaryLine":"New York, NY 10001","bankCountryCode":"US","routingNumber":"021000021","accountNumberLast4":"6789","accountNumberAndIDSHA256":"abc123hash456def789","description":"Test bank account","metadata":{"type":"checking"}}]}
+                {"object":"list","limit":10,"skip":0,"totalCount":1,"data":[{"id":"bank_123456789","object":"bank_account","live":false,"accountNumberAndIDSHA256":"abc123hash456def789","accountNumberLast4":"6789","bankCountryCode":"US","bankName":"Test Bank","bankPrimaryLine":"123 Main St","bankSecondaryLine":"New York, NY 10001","description":"Test bank account","metadata":{"type":"checking"},"routingNumber":"021000021","signatureText":"John Doe","createdAt":"2025-03-16T15:22:33.726Z","updatedAt":"2025-03-16T15:22:33.726Z"}]}
                 """;
 
             // Return the response

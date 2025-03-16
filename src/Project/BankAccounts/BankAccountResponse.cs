@@ -74,4 +74,14 @@ public class BankAccountResponse
     /// See Metadata
     /// </summary>
     public Dictionary<string, string>? Metadata { get; set; }
+
+    /// <summary>
+    /// The date and time when the bank account was created
+    /// </summary>
+    public required DateTimeOffset CreatedAt { get; set; }
+
+    /// <summary>
+    /// The date and time when the bank account was last updated
+    /// </summary>
+    public required DateTimeOffset UpdatedAt { get; set; }
 }

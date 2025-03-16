@@ -109,10 +109,12 @@ public partial class PostGridConnection : IPostGridConnection
             if (isJson) {
                 try {
                     // Try to deserialize the error response
-                    //var errorString = await response.Content.ReadAsStringAsync();
-                    //var errorResponse = JsonSerializer.Deserialize(errorString, PostGridJsonSerializerContext.Default.ErrorResponse);
                     var errorStream = await response.Content.ReadAsStreamAsync();
                     var errorResponse = await JsonSerializer.DeserializeAsync(errorStream, PostGridJsonSerializerContext.Default.ErrorResponse, cancellationToken);
+                    /*
+                    var errorString = await response.Content.ReadAsStringAsync();
+                    var errorResponse = JsonSerializer.Deserialize(errorString, PostGridJsonSerializerContext.Default.ErrorResponse);
+                    */
 
                     if (errorResponse?.Error?.Type != null) {
                         throw new PostGridException(
