@@ -46,6 +46,11 @@ public class ContactBaseResponse
     public string? CountryCode { get; set; }
 
     /// <summary>
+    /// Full country name
+    /// </summary>
+    public string? Country { get; set; }
+
+    /// <summary>
     /// One of verified, corrected, or failed
     /// </summary>
     public string? AddressStatus { get; set; }
@@ -89,14 +94,4 @@ public class ContactBaseResponse
     /// Hide contact details apart from final print
     /// </summary>
     public required bool Secret { get; set; }
-
-    /// <summary>
-    /// The date and time when the contact was created
-    /// </summary>
-    public DateTimeOffset CreatedAt { get; set; }
-
-    /// <summary>
-    /// The date and time when the contact was last updated
-    /// </summary>
-    public DateTimeOffset UpdatedAt { get; set; }
 }

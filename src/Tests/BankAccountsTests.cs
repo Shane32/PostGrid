@@ -31,14 +31,11 @@ public class BankAccountsTests : PostGridTestBase
         };
 
         // Set either signature image or text based on the test case
-        if (useSignatureImage)
-        {
+        if (useSignatureImage) {
             // Use a sample image for testing
             bankAccountRequest.SignatureImage = new byte[] { 0x89, 0x50, 0x4E, 0x47 }; // PNG header bytes
             bankAccountRequest.SignatureImageContentType = "image/png";
-        }
-        else
-        {
+        } else {
             bankAccountRequest.SignatureText = "John Doe";
         }
 
@@ -76,8 +73,7 @@ public class BankAccountsTests : PostGridTestBase
             request.Headers.GetValues("x-api-key").ShouldBe(new string[] { "test_api_key_123" });
 
             // Verify form data
-            if (request.Content is MultipartFormDataContent multipartContent && useSignatureImage)
-            {
+            if (request.Content is MultipartFormDataContent multipartContent && useSignatureImage) {
                 // Verify the multipart form data contains all expected parts with correct values
                 multipartContent.ShouldContainPart("signatureImage", "image/png");
                 multipartContent.ShouldContainPartWithValue("bankName", "Test Bank");
@@ -88,9 +84,7 @@ public class BankAccountsTests : PostGridTestBase
                 multipartContent.ShouldContainPartWithValue("bankSecondaryLine", "New York, NY 10001");
                 multipartContent.ShouldContainPartWithValue("description", "Test bank account");
                 multipartContent.ShouldContainPartWithValue("metadata[type]", "checking");
-            }
-            else
-            {
+            } else {
                 // For signature text, we expect form URL encoded content
                 request.Content.ShouldBeOfType<FormUrlEncodedContent>();
                 var formData = await request.Content.ReadAsStringAsync();
@@ -326,8 +320,7 @@ public class BankAccountsTests : PostGridTestBase
 
         // Act
         var results = new List<BankAccountResponse>();
-        await foreach (var bankAccountEntry in PostGrid.BankAccounts.ListAllAsync(search: "Test"))
-        {
+        await foreach (var bankAccountEntry in PostGrid.BankAccounts.ListAllAsync(search: "Test")) {
             results.Add(bankAccountEntry);
         }
 

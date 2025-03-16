@@ -19,4 +19,14 @@ public class ContactResponse : ContactBaseResponse
     /// Override the given address verification status
     /// </summary>
     public required bool ForceVerifiedStatus { get; set; }
+
+    /// <summary>
+    /// The date and time when the contact was created
+    /// </summary>
+    public required DateTimeOffset CreatedAt { get; set; }
+
+    /// <summary>
+    /// The date and time when the contact was last updated
+    /// </summary>
+    public required DateTimeOffset UpdatedAt { get; set; }
 }

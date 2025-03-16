@@ -113,5 +113,15 @@ public class App
         var retrievedCheck = await _postGrid.Checks.GetAsync(checkResponse.Id);
         var checkJson = System.Text.Json.JsonSerializer.Serialize(retrievedCheck, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
         Console.WriteLine(checkJson);
+
+        var checkList = await _postGrid.Checks.ListAsync();
+
+        var deleteResponse = await _postGrid.Checks.DeleteAsync(checkResponse.Id);
+        Console.WriteLine($"Check deleted: {deleteResponse}");
+        Console.ReadLine();
+
+        var getResponse2 = await _postGrid.Checks.GetAsync(checkResponse.Id);
+        Console.WriteLine($"Check after delete: {getResponse2}");
+        Console.ReadLine();
     }
 }

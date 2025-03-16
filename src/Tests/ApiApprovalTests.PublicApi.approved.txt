@@ -77,6 +77,14 @@ namespace Shane32.PostGrid.Checks
         public string Id { get; set; }
         public string? Note { get; set; }
     }
+    public class CheckCancellationInfo
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public CheckCancellationInfo() { }
+        public string CancelledByUser { get; set; }
+        public string Reason { get; set; }
+    }
     public class CheckResponse
     {
         [System.Obsolete("Constructors of types with required members are not supported in this version of " +
@@ -84,8 +92,11 @@ namespace Shane32.PostGrid.Checks
         public CheckResponse() { }
         public int Amount { get; set; }
         public string BankAccount { get; set; }
+        public Shane32.PostGrid.Checks.CheckCancellationInfo? Cancellation { get; set; }
+        public System.DateTimeOffset CreatedAt { get; set; }
         public string CurrencyCode { get; set; }
         public string? Description { get; set; }
+        public string Envelope { get; set; }
         public Shane32.PostGrid.Contacts.ContactBaseResponse From { get; set; }
         public string Id { get; set; }
         public string? ImbStatus { get; set; }
@@ -102,9 +113,12 @@ namespace Shane32.PostGrid.Checks
         public string? Message { get; set; }
         public System.Collections.Generic.Dictionary<string, string>? Metadata { get; set; }
         public int Number { get; set; }
+        public int? PageCount { get; set; }
         public System.DateTimeOffset SendDate { get; set; }
+        public string Size { get; set; }
         public string Status { get; set; }
         public Shane32.PostGrid.Contacts.ContactBaseResponse To { get; set; }
+        public System.DateTimeOffset UpdatedAt { get; set; }
         public string? Url { get; set; }
     }
     public class CreateRequest
@@ -168,8 +182,8 @@ namespace Shane32.PostGrid.Contacts
         public string? AddressStatus { get; set; }
         public string? City { get; set; }
         public string? CompanyName { get; set; }
+        public string? Country { get; set; }
         public string? CountryCode { get; set; }
-        public System.DateTimeOffset CreatedAt { get; set; }
         public string? Description { get; set; }
         public string? Email { get; set; }
         public string? FirstName { get; set; }
@@ -181,16 +195,17 @@ namespace Shane32.PostGrid.Contacts
         public string? PostalOrZip { get; set; }
         public string? ProvinceOrState { get; set; }
         public bool Secret { get; set; }
-        public System.DateTimeOffset UpdatedAt { get; set; }
     }
     public class ContactResponse : Shane32.PostGrid.Contacts.ContactBaseResponse
     {
         [System.Obsolete("Constructors of types with required members are not supported in this version of " +
             "your compiler.", true)]
         public ContactResponse() { }
+        public System.DateTimeOffset CreatedAt { get; set; }
         public bool ForceVerifiedStatus { get; set; }
         public bool Live { get; set; }
         public bool SkipVerification { get; set; }
+        public System.DateTimeOffset UpdatedAt { get; set; }
     }
     public class CreateRequest
     {

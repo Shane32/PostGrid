@@ -118,4 +118,34 @@ public class CheckResponse
     /// See Metadata
     /// </summary>
     public Dictionary<string, string>? Metadata { get; set; }
+
+    /// <summary>
+    /// The envelope type used for the check
+    /// </summary>
+    public required string Envelope { get; set; }
+
+    /// <summary>
+    /// The size of the check (e.g., us_letter)
+    /// </summary>
+    public required string Size { get; set; }
+
+    /// <summary>
+    /// The number of pages in the check document
+    /// </summary>
+    public int? PageCount { get; set; }
+
+    /// <summary>
+    /// The date and time when the check was created
+    /// </summary>
+    public required DateTimeOffset CreatedAt { get; set; }
+
+    /// <summary>
+    /// The date and time when the check was last updated
+    /// </summary>
+    public required DateTimeOffset UpdatedAt { get; set; }
+
+    /// <summary>
+    /// Cancellation information if the check has been cancelled
+    /// </summary>
+    public CheckCancellationInfo? Cancellation { get; set; }
 }

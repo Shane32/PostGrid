@@ -333,8 +333,7 @@ public class ContactsTests : PostGridTestBase
 
         // Act
         var results = new List<ContactResponse>();
-        await foreach (var contactEntry in PostGrid.Contacts.ListAllAsync(search: "Smith"))
-        {
+        await foreach (var contactEntry in PostGrid.Contacts.ListAllAsync(search: "Smith")) {
             results.Add(contactEntry);
         }
 
