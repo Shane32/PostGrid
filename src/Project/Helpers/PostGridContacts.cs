@@ -52,11 +52,11 @@ public class PostGridContacts
     /// </summary>
     /// <param name="id">The ID of the contact to delete.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A task representing the asynchronous operation, containing the response from the API.</returns>
-    public async Task<ContactResponse> DeleteAsync(string id, CancellationToken cancellationToken = default)
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task DeleteAsync(string id, CancellationToken cancellationToken = default)
     {
         var request = new DeleteRequest { Id = id };
-        return await _connection.ExecuteAsync(request, cancellationToken);
+        await _connection.ExecuteAsync(request, cancellationToken);
     }
 
     /// <summary>

@@ -178,7 +178,6 @@ namespace Shane32.PostGrid.Contacts
         public string? PhoneNumber { get; set; }
         public string? PostalOrZip { get; set; }
         public string? ProvinceOrState { get; set; }
-        public bool Secret { get; set; }
         public System.DateTimeOffset UpdatedAt { get; set; }
     }
     public class ContactResponse : Shane32.PostGrid.Contacts.ContactBaseResponse
@@ -188,6 +187,7 @@ namespace Shane32.PostGrid.Contacts
         public ContactResponse() { }
         public bool ForceVerifiedStatus { get; set; }
         public bool Live { get; set; }
+        public bool Secret { get; set; }
         public bool SkipVerification { get; set; }
     }
     public class CreateRequest
@@ -235,49 +235,20 @@ namespace Shane32.PostGrid.Contacts
         public int? Skip { get; set; }
     }
 }
-namespace Shane32.PostGrid.Helpers
-{
-    public class PostGridBankAccounts
-    {
-        public PostGridBankAccounts(Shane32.PostGrid.IPostGridConnection connection) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> CreateAsync(Shane32.PostGrid.BankAccounts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
-        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridBankAccounts.<ListAllAsync>d__7))]
-        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.BankAccounts.BankAccountResponse> ListAllAsync(int pageLimit = 100, string? search = null, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ListAsync(Shane32.PostGrid.BankAccounts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ListAsync(int? skip = default, int? limit = default, string? search = null, System.Threading.CancellationToken cancellationToken = default) { }
-    }
-    public class PostGridChecks
-    {
-        public PostGridChecks(Shane32.PostGrid.IPostGridConnection connection) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> CancelAsync(string id, string? note = null, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> CreateAsync(Shane32.PostGrid.Checks.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
-        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridChecks.<ListAllAsync>d__8))]
-        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.Checks.CheckResponse> ListAllAsync(int pageLimit = 100, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ListAsync(Shane32.PostGrid.Checks.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ListAsync(int? skip = default, int? limit = default, System.Threading.CancellationToken cancellationToken = default) { }
-    }
-    public class PostGridContacts
-    {
-        public PostGridContacts(Shane32.PostGrid.IPostGridConnection connection) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> CreateAsync(Shane32.PostGrid.Contacts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
-        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridContacts.<ListAllAsync>d__7))]
-        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.Contacts.ContactResponse> ListAllAsync(int pageLimit = 100, string? search = null, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ListAsync(Shane32.PostGrid.Contacts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ListAsync(int? skip = default, int? limit = default, string? search = null, System.Threading.CancellationToken cancellationToken = default) { }
-    }
-}
 namespace Shane32.PostGrid
 {
+    public class DeleteResponse
+    {
+        [System.Obsolete("Constructors of types with required members are not supported in this version of " +
+            "your compiler.", true)]
+        public DeleteResponse() { }
+        public bool Deleted { get; set; }
+        public string Id { get; set; }
+    }
     public interface IPostGridConnection
     {
         System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default);
-        System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task ExecuteAsync(Shane32.PostGrid.BankAccounts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.GetRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ExecuteAsync(Shane32.PostGrid.BankAccounts.ListRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.CancelRequest request, System.Threading.CancellationToken cancellationToken = default);
@@ -286,7 +257,7 @@ namespace Shane32.PostGrid
         System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.GetRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ExecuteAsync(Shane32.PostGrid.Checks.ListRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default);
-        System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task ExecuteAsync(Shane32.PostGrid.Contacts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.GetRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ExecuteAsync(Shane32.PostGrid.Contacts.ListRequest request, System.Threading.CancellationToken cancellationToken = default);
         System.Threading.Tasks.ValueTask<string> GetApiKey(System.Threading.CancellationToken cancellationToken = default);
@@ -310,7 +281,7 @@ namespace Shane32.PostGrid
     {
         public PostGridConnection(System.Net.Http.HttpClient httpClient, Microsoft.Extensions.Options.IOptions<Shane32.PostGrid.PostGridOptions> options) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task ExecuteAsync(Shane32.PostGrid.BankAccounts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> ExecuteAsync(Shane32.PostGrid.BankAccounts.GetRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ExecuteAsync(Shane32.PostGrid.BankAccounts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.CancelRequest request, System.Threading.CancellationToken cancellationToken = default) { }
@@ -319,7 +290,7 @@ namespace Shane32.PostGrid
         public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> ExecuteAsync(Shane32.PostGrid.Checks.GetRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ExecuteAsync(Shane32.PostGrid.Checks.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task ExecuteAsync(Shane32.PostGrid.Contacts.DeleteRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> ExecuteAsync(Shane32.PostGrid.Contacts.GetRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ExecuteAsync(Shane32.PostGrid.Contacts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
         public virtual System.Threading.Tasks.ValueTask<string> GetApiKey(System.Threading.CancellationToken cancellationToken = default) { }
@@ -340,5 +311,42 @@ namespace Shane32.PostGrid
         public int DefaultRetryDelayMs { get; set; }
         public int MaxRetryAttempts { get; set; }
         public System.Func<int, System.Threading.Tasks.ValueTask<System.TimeSpan?>>? ShouldRetryAsync { get; set; }
+    }
+}
+namespace Shane32.PostGrid.Helpers
+{
+    public class PostGridBankAccounts
+    {
+        public PostGridBankAccounts(Shane32.PostGrid.IPostGridConnection connection) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> CreateAsync(Shane32.PostGrid.BankAccounts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.BankAccounts.BankAccountResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridBankAccounts.<ListAllAsync>d__7))]
+        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.BankAccounts.BankAccountResponse> ListAllAsync(int pageLimit = 100, string? search = null, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ListAsync(Shane32.PostGrid.BankAccounts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.BankAccounts.BankAccountResponse>> ListAsync(int? skip = default, int? limit = default, string? search = null, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public class PostGridChecks
+    {
+        public PostGridChecks(Shane32.PostGrid.IPostGridConnection connection) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> CancelAsync(string id, string? note = null, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> CreateAsync(Shane32.PostGrid.Checks.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Checks.CheckResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridChecks.<ListAllAsync>d__8))]
+        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.Checks.CheckResponse> ListAllAsync(int pageLimit = 100, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ListAsync(Shane32.PostGrid.Checks.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Checks.CheckResponse>> ListAsync(int? skip = default, int? limit = default, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public class PostGridContacts
+    {
+        public PostGridContacts(Shane32.PostGrid.IPostGridConnection connection) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> CreateAsync(Shane32.PostGrid.Contacts.CreateRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task DeleteAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.Contacts.ContactResponse> GetAsync(string id, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Runtime.CompilerServices.AsyncIteratorStateMachine(typeof(Shane32.PostGrid.Helpers.PostGridContacts.<ListAllAsync>d__7))]
+        public System.Collections.Generic.IAsyncEnumerable<Shane32.PostGrid.Contacts.ContactResponse> ListAllAsync(int pageLimit = 100, string? search = null, [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ListAsync(Shane32.PostGrid.Contacts.ListRequest request, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<Shane32.PostGrid.ListResponse<Shane32.PostGrid.Contacts.ContactResponse>> ListAsync(int? skip = default, int? limit = default, string? search = null, System.Threading.CancellationToken cancellationToken = default) { }
     }
 }

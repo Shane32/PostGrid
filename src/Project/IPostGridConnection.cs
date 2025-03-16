@@ -39,10 +39,10 @@ public interface IPostGridConnection
     /// </summary>
     /// <param name="request">The contact delete request to execute.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A task representing the asynchronous operation, containing the contact response from the API.</returns>
+    /// <returns>A task representing the asynchronous operation.</returns>
     /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
     /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
-    public Task<Contacts.ContactResponse> ExecuteAsync(Contacts.DeleteRequest request, CancellationToken cancellationToken = default);
+    public Task ExecuteAsync(Contacts.DeleteRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Executes a list contacts request against the PostGrid API.
@@ -83,10 +83,10 @@ public interface IPostGridConnection
     /// </summary>
     /// <param name="request">The bank account delete request to execute.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A task representing the asynchronous operation, containing the bank account response from the API.</returns>
+    /// <returns>A task representing the asynchronous operation.</returns>
     /// <exception cref="PostGridException">Thrown when the request fails and the error response can be deserialized.</exception>
     /// <exception cref="HttpRequestException">Thrown when the request fails and the error response cannot be deserialized.</exception>
-    public Task<BankAccounts.BankAccountResponse> ExecuteAsync(BankAccounts.DeleteRequest request, CancellationToken cancellationToken = default);
+    public Task ExecuteAsync(BankAccounts.DeleteRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Executes a list bank accounts request against the PostGrid API.
