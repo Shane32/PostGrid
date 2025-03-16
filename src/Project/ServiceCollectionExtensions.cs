@@ -22,17 +22,16 @@ public static class PostGridExtensions
             throw new ArgumentNullException(nameof(configuration));
 
         // Configure options from the configuration
-        services.Configure<PostGridOptions>(options =>
-        {
+        services.Configure<PostGridOptions>(options => {
             options.ApiKey = configuration["ApiKey"]!;
-            
+
             var baseUrl = configuration["BaseUrl"];
             if (baseUrl != null && !string.IsNullOrEmpty(baseUrl))
                 options.BaseUrl = baseUrl;
-            
+
             if (int.TryParse(configuration["MaxRetryAttempts"], out var maxRetryAttempts))
                 options.MaxRetryAttempts = maxRetryAttempts;
-            
+
             if (int.TryParse(configuration["DefaultRetryDelayMs"], out var defaultRetryDelayMs))
                 options.DefaultRetryDelayMs = defaultRetryDelayMs;
         });

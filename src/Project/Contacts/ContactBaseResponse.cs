@@ -26,6 +26,11 @@ public class ContactBaseResponse
     public string? AddressLine2 { get; set; }
 
     /// <summary>
+    /// City of address
+    /// </summary>
+    public string? City { get; set; }
+
+    /// <summary>
     /// Province or state of address
     /// </summary>
     public string? ProvinceOrState { get; set; }

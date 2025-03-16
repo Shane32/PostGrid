@@ -1,0 +1,1 @@
+firstName=Kevin&lastName=Smith&companyName=PostGrid&addressLine1=20-20+bay+st&addressLine2=floor+11&city=toronto&provinceOrState=ON&email=kevinsmith%40postgrid.com&phoneNumber=8885550100&jobTitle=Manager&postalOrZip=M5J+2N8&countryCode=CA&description=Kevin+Smith%27s+contact+information&skipVerification=false&forceVerifiedStatus=false&secret=false&metadata%5Bfriend%5D=no

@@ -16,6 +16,7 @@ public class App
         // Create a new contact
         var contactRequest = new Shane32.PostGrid.Contacts.CreateRequest {
             FirstName = "Kevin",
+            LastName = "Smith",
             CompanyName = "PostGrid",
             AddressLine1 = "20-20 bay st",
             AddressLine2 = "floor 11",
@@ -26,13 +27,14 @@ public class App
             Email = "kevinsmith@postgrid.com",
             PhoneNumber = "8885550100",
             JobTitle = "Manager",
-            Description = "Kevin Smith's contact information"
-        };
-
-        // Add metadata
-        contactRequest.Metadata = new Dictionary<string, string>
-        {
-            { "friend", "no" }
+            Description = "Kevin Smith's contact information",
+            Metadata = new Dictionary<string, string>
+            {
+                { "friend", "no" }
+            },
+            ForceVerifiedStatus = false,
+            SkipVerification = false,
+            Secret = false,
         };
 
         Console.WriteLine("Creating contact...");

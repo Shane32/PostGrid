@@ -164,6 +164,7 @@ namespace Shane32.PostGrid.Contacts
         public string AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
         public string? AddressStatus { get; set; }
+        public string? City { get; set; }
         public string? CompanyName { get; set; }
         public string? CountryCode { get; set; }
         public string? Description { get; set; }
