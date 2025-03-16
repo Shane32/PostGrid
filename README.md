@@ -10,6 +10,25 @@ This is a SDK for the PostGrid API. It is not endorsed or maintained by PostGrid
 
 It also has an optional retry mechanism for rate-limited requests and supports NativeAOT.
 
+## Supported APIs
+
+- [x] Contacts
+- [x] BankAccounts
+- [x] Checks
+- [ ] Templates
+- [ ] Letters
+- [ ] Postcards
+- [ ] Letters with plastic cards
+- [ ] Self mailers
+- [ ] Webhooks
+- [ ] Return envelopes
+- [ ] Return envelope orders
+- [ ] Events
+- [ ] Template editor sessions
+- [ ] Trackers
+
+See https://docs.postgrid.com/
+
 ## Installation
 
 Install the package via NuGet:
