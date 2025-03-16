@@ -324,4 +324,74 @@ public class ContactsTests : PostGridTestBase
             });
         }
     }
+
+    [Fact]
+    public async Task ListAllContacts_Successful()
+    {
+        // Set up the response handler
+        CreateResponse = VerifyRequestAndCreateResponse;
+
+        // Act
+        var results = new List<ContactResponse>();
+        await foreach (var contactEntry in PostGrid.Contacts.ListAllAsync(search: "Smith"))
+        {
+            results.Add(contactEntry);
+        }
+
+        // Assert
+        // Verify the response
+        results.ShouldNotBeNull();
+        results.Count.ShouldBe(1);
+
+        // Verify the contact in the list
+        var contact = results[0];
+        contact.ShouldNotBeNull();
+        contact.Id.ShouldBe("contact_123456789");
+        contact.FirstName.ShouldBe("Kevin");
+        contact.LastName.ShouldBe("Smith");
+        contact.CompanyName.ShouldBe("PostGrid");
+        contact.AddressLine1.ShouldBe("20-20 BAY ST");
+        contact.AddressLine2.ShouldBe("FLOOR 11");
+        contact.City.ShouldBe("TORONTO");
+        contact.ProvinceOrState.ShouldBe("ON");
+        contact.PostalOrZip.ShouldBe("M5J 2N8");
+        contact.CountryCode.ShouldBe("CA");
+        contact.Email.ShouldBe("kevinsmith@postgrid.com");
+        contact.PhoneNumber.ShouldBe("8885550100");
+        contact.JobTitle.ShouldBe("Manager");
+        contact.Description.ShouldBe("Kevin Smith's contact information");
+        contact.AddressStatus.ShouldBe("verified");
+        contact.Live.ShouldBeFalse();
+        contact.Secret.ShouldBeFalse();
+        contact.SkipVerification.ShouldBeFalse();
+        contact.ForceVerifiedStatus.ShouldBeFalse();
+        contact.Metadata.ShouldNotBeNull();
+        contact.Metadata["friend"].ShouldBe("no");
+        contact.CreatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T04:25:42.200Z"));
+        contact.UpdatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T04:30:49.259Z"));
+
+        // Local function to verify the request and return a response
+        Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            // Verify the request
+            request.ShouldNotBeNull();
+            request.Method.ShouldBe(HttpMethod.Get);
+            request.RequestUri.ShouldNotBeNull().ToString().ShouldBe("https://api.postgrid.com/print-mail/v1/contacts?skip=0&limit=100&search=Smith");
+
+            // Verify headers
+            request.Headers.Contains("x-api-key").ShouldBeTrue();
+            request.Headers.GetValues("x-api-key").ShouldBe(new string[] { "test_api_key_123" });
+
+            // Set up the response
+            var response = """
+                {"object":"list","limit":100,"skip":0,"totalCount":1,"data":[{"id":"contact_123456789","object":"contact","live":false,"addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","forceVerifiedStatus":false,"jobTitle":"Manager","lastName":"Smith","mailingLists":[],"metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false,"skipVerification":false,"createdAt":"2025-03-16T04:25:42.200Z","updatedAt":"2025-03-16T04:30:49.259Z"}]}
+                """;
+
+            // Return the response
+            return Task.FromResult(new HttpResponseMessage {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(response, Encoding.UTF8, "application/json")
+            });
+        }
+    }
 }
