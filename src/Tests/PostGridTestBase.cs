@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Moq.Protected;
-using System.Collections.Generic;
 
 namespace Tests;
 
@@ -55,7 +55,7 @@ public class PostGridTestBase : IDisposable
             new KeyValuePair<string, string?>("ApiKey", "test_api_key_123"),
             new KeyValuePair<string, string?>("BaseUrl", "https://api.postgrid.com/print-mail/v1")
         };
-        
+
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configValues)
             .Build();
