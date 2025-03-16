@@ -11,11 +11,6 @@ public class ContactResponse : ContactBaseResponse
     public required bool Live { get; set; }
 
     /// <summary>
-    /// Hide contact details apart from final print
-    /// </summary>
-    public required bool Secret { get; set; }
-
-    /// <summary>
     /// Skip address correction and verification
     /// </summary>
     public required bool SkipVerification { get; set; }

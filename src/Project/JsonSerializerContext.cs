@@ -13,7 +13,6 @@ namespace Shane32.PostGrid;
     WriteIndented = false)]
 [JsonSerializable(typeof(ContactResponse))]
 [JsonSerializable(typeof(ErrorResponse))]
-[JsonSerializable(typeof(ListResponse<ContactBaseResponse>))]
 [JsonSerializable(typeof(ListResponse<ContactResponse>))]
 [JsonSerializable(typeof(BankAccountResponse))]
 [JsonSerializable(typeof(ListResponse<BankAccountResponse>))]

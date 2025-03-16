@@ -178,6 +178,7 @@ namespace Shane32.PostGrid.Contacts
         public string? PhoneNumber { get; set; }
         public string? PostalOrZip { get; set; }
         public string? ProvinceOrState { get; set; }
+        public bool Secret { get; set; }
         public System.DateTimeOffset UpdatedAt { get; set; }
     }
     public class ContactResponse : Shane32.PostGrid.Contacts.ContactBaseResponse
@@ -187,7 +188,6 @@ namespace Shane32.PostGrid.Contacts
         public ContactResponse() { }
         public bool ForceVerifiedStatus { get; set; }
         public bool Live { get; set; }
-        public bool Secret { get; set; }
         public bool SkipVerification { get; set; }
     }
     public class CreateRequest
