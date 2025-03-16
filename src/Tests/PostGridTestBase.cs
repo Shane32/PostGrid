@@ -1,7 +1,9 @@
 using System.Net.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Moq.Protected;
+using System.Collections.Generic;
 
 namespace Tests;
 
@@ -47,11 +49,19 @@ public class PostGridTestBase : IDisposable
         // Set up DI
         var services = new ServiceCollection();
 
-        // Configure with test API key
-        services.AddPostGrid(options => {
-            options.ApiKey = "test_api_key_123";
-            options.BaseUrl = "https://api.postgrid.com/print-mail/v1";
-        });
+        // Create configuration with test settings
+        var configValues = new List<KeyValuePair<string, string?>>
+        {
+            new KeyValuePair<string, string?>("ApiKey", "test_api_key_123"),
+            new KeyValuePair<string, string?>("BaseUrl", "https://api.postgrid.com/print-mail/v1")
+        };
+        
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(configValues)
+            .Build();
+
+        // Configure with test configuration
+        services.AddPostGrid(configuration);
 
         // Replace the HttpClient with our mocked one
         services.AddHttpClient<IPostGridConnection, PostGridConnection>()

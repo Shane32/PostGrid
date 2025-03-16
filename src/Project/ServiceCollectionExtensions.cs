@@ -16,13 +16,11 @@ public static class PostGridExtensions
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddPostGrid(this IServiceCollection services, IConfiguration configuration)
     {
-        if (services == null)
-            throw new ArgumentNullException(nameof(services));
         if (configuration == null)
             throw new ArgumentNullException(nameof(configuration));
 
-        // Configure options from the configuration
-        services.Configure<PostGridOptions>(options => {
+        // Configure options from the configuration and call the other overload
+        return AddPostGrid(services, options => {
             options.ApiKey = configuration["ApiKey"]!;
 
             var baseUrl = configuration["BaseUrl"];
@@ -35,14 +33,6 @@ public static class PostGridExtensions
             if (int.TryParse(configuration["DefaultRetryDelayMs"], out var defaultRetryDelayMs))
                 options.DefaultRetryDelayMs = defaultRetryDelayMs;
         });
-
-        // Add HttpClient
-        services.AddHttpClient<IPostGridConnection, PostGridConnection>();
-
-        // Add PostGrid service
-        services.AddTransient<PostGrid>();
-
-        return services;
     }
 
     /// <summary>
