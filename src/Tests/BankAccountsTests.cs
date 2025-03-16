@@ -7,8 +7,10 @@ namespace Tests;
 
 public class BankAccountsTests : PostGridTestBase
 {
-    [Fact]
-    public async Task CreateBankAccount_Successful()
+    [Theory]
+    [InlineData(true)]  // Test with signature image
+    [InlineData(false)] // Test with signature text
+    public async Task CreateBankAccount_Successful(bool useSignatureImage)
     {
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
@@ -19,7 +21,6 @@ public class BankAccountsTests : PostGridTestBase
             AccountNumber = "123456789",
             RoutingNumber = "021000021",
             BankCountryCode = "US",
-            SignatureText = "John Doe",
             BankPrimaryLine = "123 Main St",
             BankSecondaryLine = "New York, NY 10001",
             Description = "Test bank account",
@@ -28,6 +29,18 @@ public class BankAccountsTests : PostGridTestBase
                 { "type", "checking" }
             }
         };
+
+        // Set either signature image or text based on the test case
+        if (useSignatureImage)
+        {
+            // Use a sample image for testing
+            bankAccountRequest.SignatureImage = new byte[] { 0x89, 0x50, 0x4E, 0x47 }; // PNG header bytes
+            bankAccountRequest.SignatureImageContentType = "image/png";
+        }
+        else
+        {
+            bankAccountRequest.SignatureText = "John Doe";
+        }
 
         // Act
         var result = await PostGrid.BankAccounts.CreateAsync(bankAccountRequest);
@@ -63,13 +76,30 @@ public class BankAccountsTests : PostGridTestBase
             request.Headers.GetValues("x-api-key").ShouldBe(new string[] { "test_api_key_123" });
 
             // Verify form data
-            request.Content.ShouldBeOfType<FormUrlEncodedContent>();
-            var formData = await request.Content.ReadAsStringAsync();
-            formData.ShouldBe("""
-                bankName=Test+Bank&accountNumber=123456789&routingNumber=021000021&bankCountryCode=US&signatureText=John+Doe&bankPrimaryLine=123+Main+St&bankSecondaryLine=New+York%2C+NY+10001&description=Test+bank+account&metadata%5Btype%5D=checking
-                """);
+            if (request.Content is MultipartFormDataContent multipartContent && useSignatureImage)
+            {
+                // Verify the multipart form data contains all expected parts with correct values
+                multipartContent.ShouldContainPart("signatureImage", "image/png");
+                multipartContent.ShouldContainPartWithValue("bankName", "Test Bank");
+                multipartContent.ShouldContainPartWithValue("accountNumber", "123456789");
+                multipartContent.ShouldContainPartWithValue("routingNumber", "021000021");
+                multipartContent.ShouldContainPartWithValue("bankCountryCode", "US");
+                multipartContent.ShouldContainPartWithValue("bankPrimaryLine", "123 Main St");
+                multipartContent.ShouldContainPartWithValue("bankSecondaryLine", "New York, NY 10001");
+                multipartContent.ShouldContainPartWithValue("description", "Test bank account");
+                multipartContent.ShouldContainPartWithValue("metadata[type]", "checking");
+            }
+            else
+            {
+                // For signature text, we expect form URL encoded content
+                request.Content.ShouldBeOfType<FormUrlEncodedContent>();
+                var formData = await request.Content.ReadAsStringAsync();
+                formData.ShouldBe("""
+                    bankName=Test+Bank&accountNumber=123456789&routingNumber=021000021&bankCountryCode=US&signatureText=John+Doe&bankPrimaryLine=123+Main+St&bankSecondaryLine=New+York%2C+NY+10001&description=Test+bank+account&metadata%5Btype%5D=checking
+                    """);
+            }
 
-            // Set up the response
+            // Set up the response - same for both cases
             var response = """
                 {"id":"bank_123456789","object":"bank_account","live":false,"accountNumberAndIDSHA256":"abc123hash456def789","accountNumberLast4":"6789","bankCountryCode":"US","bankName":"Test Bank","bankPrimaryLine":"123 Main St","bankSecondaryLine":"New York, NY 10001","description":"Test bank account","metadata":{"type":"checking"},"routingNumber":"021000021","signatureText":"John Doe","createdAt":"2025-03-16T15:22:33.726Z","updatedAt":"2025-03-16T15:22:33.726Z"}
                 """;
