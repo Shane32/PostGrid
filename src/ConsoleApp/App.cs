@@ -13,7 +13,6 @@ public class App
 
     public async Task RunAsync()
     {
-        await _postGrid.BankAccounts.ListAsync(0, 1);
         // Create a new contact
         var contactRequest = new Shane32.PostGrid.Contacts.CreateRequest {
             FirstName = "Kevin",
