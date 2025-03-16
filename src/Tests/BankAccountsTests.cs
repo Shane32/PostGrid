@@ -87,7 +87,7 @@ public class BankAccountsTests : PostGridTestBase
     {
         // Bank account ID to retrieve
         var bankAccountId = "bank_123456789";
-        
+
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
@@ -142,7 +142,7 @@ public class BankAccountsTests : PostGridTestBase
     {
         // Bank account ID to delete
         var bankAccountId = "bank_123456789";
-        
+
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
@@ -182,7 +182,7 @@ public class BankAccountsTests : PostGridTestBase
     {
         // Bank account ID to delete
         var bankAccountId = "bank_123456789";
-        
+
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
@@ -190,7 +190,7 @@ public class BankAccountsTests : PostGridTestBase
         // The delete operation should throw a PostGridException
         var exception = await Should.ThrowAsync<PostGridException>(async () =>
             await PostGrid.BankAccounts.DeleteAsync(bankAccountId));
-        
+
         // Verify the exception details
         exception.ShouldNotBeNull();
         exception.Message.ShouldBe("Could not find bank account with id bank_account_id");

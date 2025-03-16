@@ -106,7 +106,7 @@ public class ContactsTests : PostGridTestBase
     {
         // Contact ID to retrieve
         var contactId = "contact_123456789";
-        
+
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
@@ -170,7 +170,7 @@ public class ContactsTests : PostGridTestBase
     {
         // Contact ID to delete
         var contactId = "contact_123456789";
-        
+
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
@@ -210,7 +210,7 @@ public class ContactsTests : PostGridTestBase
     {
         // Contact ID to delete
         var contactId = "contact_123456789";
-        
+
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
@@ -218,7 +218,7 @@ public class ContactsTests : PostGridTestBase
         // The delete operation should throw a PostGridException
         var exception = await Should.ThrowAsync<PostGridException>(async () =>
             await PostGrid.Contacts.DeleteAsync(contactId));
-        
+
         // Verify the exception details
         exception.ShouldNotBeNull();
         exception.Message.ShouldBe("Contact with ID contact_123456789 was not found.");

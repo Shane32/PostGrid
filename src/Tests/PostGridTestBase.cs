@@ -11,12 +11,12 @@ namespace Tests;
 public class PostGridTestBase : IDisposable
 {
     private readonly Mock<HttpMessageHandler> _mockHttpMessageHandler;
-    
+
     /// <summary>
     /// Gets the service provider.
     /// </summary>
     protected ServiceProvider ServiceProvider { get; }
-    
+
     /// <summary>
     /// Gets the PostGrid client.
     /// </summary>
@@ -26,7 +26,7 @@ public class PostGridTestBase : IDisposable
     /// Gets or sets the function that creates HTTP responses based on requests.
     /// Each test can assign a different lambda to this property.
     /// </summary>
-    protected Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> CreateResponse { get; set; } = 
+    protected Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> CreateResponse { get; set; } =
         (_, _) => throw new InvalidOperationException("CreateResponse has not been implemented for this test.");
 
     protected PostGridTestBase()
@@ -41,7 +41,7 @@ public class PostGridTestBase : IDisposable
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>())
-            .Returns((HttpRequestMessage request, CancellationToken cancellationToken) => 
+            .Returns((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 CreateResponse(request, cancellationToken));
 
         // Set up DI
