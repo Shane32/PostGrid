@@ -13,7 +13,6 @@ public class App
 
     public async Task RunAsync()
     {
-        await _postGrid.Contacts.DeleteAsync("contact_2r6uqKJXvTffod1kt8GEpw");
         // Create a new contact
         var contactRequest = new Shane32.PostGrid.Contacts.CreateRequest {
             FirstName = "Kevin",
@@ -40,8 +39,6 @@ public class App
 
         Console.WriteLine("Creating contact...");
         var contactResponse = await _postGrid.Contacts.CreateAsync(contactRequest);
-
-        await _postGrid.Contacts.DeleteAsync(contactResponse.Id);
 
         // Display the response
         Console.WriteLine($"Contact created with ID: {contactResponse.Id}");

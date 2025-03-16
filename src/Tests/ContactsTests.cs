@@ -292,6 +292,76 @@ public class ContactsTests
     }
 
     [Fact]
+    public async Task DeleteContact_NotFound()
+    {
+        // Contact ID to delete
+        var contactId = "contact_123456789";
+        
+        // Arrange
+        // Mock HTTP message handler to capture the request and return a predefined response
+        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+
+        mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Returns(VerifyRequestAndCreateResponse);
+
+        // Set up DI
+        var services = new ServiceCollection();
+
+        // Configure with test API key
+        services.AddPostGrid(options => {
+            options.ApiKey = "test_api_key_123";
+            options.BaseUrl = "https://api.postgrid.com/print-mail/v1";
+        });
+
+        // Replace the HttpClient with our mocked one
+        services.AddHttpClient<IPostGridConnection, PostGridConnection>()
+            .ConfigurePrimaryHttpMessageHandler(() => mockHttpMessageHandler.Object);
+
+        using var serviceProvider = services.BuildServiceProvider();
+
+        // Get the PostGrid client from DI
+        var postGrid = serviceProvider.GetRequiredService<PostGrid>();
+
+        // Act & Assert
+        // The delete operation should throw a PostGridException
+        var exception = await Should.ThrowAsync<PostGridException>(async () =>
+            await postGrid.Contacts.DeleteAsync(contactId));
+        
+        // Verify the exception details
+        exception.ShouldNotBeNull();
+        exception.Message.ShouldBe("Contact with ID contact_123456789 was not found.");
+
+        // Local function to verify the request and return a response
+        Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            // Verify the request
+            request.ShouldNotBeNull();
+            request.Method.ShouldBe(HttpMethod.Delete);
+            request.RequestUri.ShouldNotBeNull().ToString().ShouldBe($"https://api.postgrid.com/print-mail/v1/contacts/{contactId}");
+
+            // Verify headers
+            request.Headers.Contains("x-api-key").ShouldBeTrue();
+            request.Headers.GetValues("x-api-key").ShouldBe(new string[] { "test_api_key_123" });
+
+            // Set up the error response
+            var response = """
+                {"object":"error","error":{"type":"contact_not_found_error","message":"Contact with ID contact_123456789 was not found."}}
+                """;
+
+            // Return the response with a 404 Not Found status code
+            return Task.FromResult(new HttpResponseMessage {
+                StatusCode = HttpStatusCode.NotFound,
+                Content = new StringContent(response, Encoding.UTF8, "application/json")
+            });
+        }
+    }
+
+    [Fact]
     public async Task ListContacts_Successful()
     {
         // Arrange

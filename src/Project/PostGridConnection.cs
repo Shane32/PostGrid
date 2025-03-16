@@ -109,15 +109,15 @@ public partial class PostGridConnection : IPostGridConnection
             if (isJson) {
                 try {
                     // Try to deserialize the error response
-                    var errorString = await response.Content.ReadAsStringAsync();
-                    var errorResponse = JsonSerializer.Deserialize(errorString, PostGridJsonSerializerContext.Default.ErrorResponse);
-                    //var errorStream = await response.Content.ReadAsStreamAsync();
-                    //var errorResponse = await JsonSerializer.DeserializeAsync(errorStream, PostGridJsonSerializerContext.Default.ErrorResponse, cancellationToken);
+                    //var errorString = await response.Content.ReadAsStringAsync();
+                    //var errorResponse = JsonSerializer.Deserialize(errorString, PostGridJsonSerializerContext.Default.ErrorResponse);
+                    var errorStream = await response.Content.ReadAsStreamAsync();
+                    var errorResponse = await JsonSerializer.DeserializeAsync(errorStream, PostGridJsonSerializerContext.Default.ErrorResponse, cancellationToken);
 
-                    if (errorResponse != null && errorResponse.Type != null) {
+                    if (errorResponse?.Error?.Type != null) {
                         throw new PostGridException(
-                            errorResponse.Type,
-                            errorResponse.Message ?? "Unknown error",
+                            errorResponse.Error.Type,
+                            errorResponse.Error.Message ?? "Unknown error",
                             response.StatusCode,
                             null);
                     }
@@ -152,16 +152,16 @@ public partial class PostGridConnection : IPostGridConnection
     {
         return SendRequestAsync(
             requestFactory,
-            /*
             async (stream, token) => await JsonSerializer.DeserializeAsync(stream, jsonTypeInfo, token)
                 ?? throw new JsonException("The response returned a null object."),
-            */
+            /*
             async (stream, token) => {
                 // Deserialize the response to a string for debugging
                 var responseString = await new StreamReader(stream).ReadToEndAsync();
                 return JsonSerializer.Deserialize<T>(responseString, jsonTypeInfo)
                     ?? throw new JsonException("The response returned a null object.");
             },
+            */
             cancellationToken);
     }
 }
