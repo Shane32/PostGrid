@@ -62,46 +62,67 @@ Inject and use PostGrid in your service classes:
 ```csharp
 using Shane32.PostGrid;
 using Shane32.PostGrid.Contacts;
+using Shane32.PostGrid.BankAccounts;
+using Shane32.PostGrid.Checks;
 
-public class ContactService
+public class CheckProcessingService
 {
     private readonly PostGrid _postGrid;
 
-    public ContactService(PostGrid postGrid)
+    public CheckProcessingService(PostGrid postGrid)
     {
         _postGrid = postGrid;
     }
 
-    public async Task<ContactResponse> CreateContactAsync(string firstName, string lastName, string address)
+    public async Task<string> ProcessCheckAsync(decimal amount, string memo)
     {
-        try
+        // 1. Create a bank account
+        var bankAccountResponse = await _postGrid.BankAccounts.CreateAsync(new()
         {
-            return await _postGrid.Contacts.CreateAsync(new()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                AddressLine1 = address,
-                CountryCode = "US"
-            });
-        }
-        catch (PostGridException ex)
-        {
-            // Handle API errors
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-    }
+            BankName = "Test Bank",
+            AccountNumber = "123456789",
+            RoutingNumber = "021000021",
+            BankCountryCode = "US",
+            SignatureText = "John Doe"
+        });
 
-    public async Task<IEnumerable<ContactResponse>> GetAllContactsAsync()
-    {
-        var contacts = new List<ContactResponse>();
-        
-        await foreach (var contact in _postGrid.Contacts.ListAllAsync())
+        // 2. Create contacts for from/to
+        var senderContact = await _postGrid.Contacts.CreateAsync(new()
         {
-            contacts.Add(contact);
-        }
-        
-        return contacts;
+            FirstName = "John",
+            LastName = "Doe",
+            AddressLine1 = "123 Main St",
+            City = "New York",
+            ProvinceOrState = "NY",
+            PostalOrZip = "10001",
+            CountryCode = "US"
+        });
+
+        var recipientContact = await _postGrid.Contacts.CreateAsync(new()
+        {
+            FirstName = "Jane",
+            LastName = "Smith",
+            AddressLine1 = "456 Park Ave",
+            City = "New York",
+            ProvinceOrState = "NY",
+            PostalOrZip = "10002",
+            CountryCode = "US"
+        });
+
+        // 3. Create a check
+        var checkResponse = await _postGrid.Checks.CreateAsync(new()
+        {
+            To = recipientContact.Id,
+            From = senderContact.Id,
+            BankAccount = bankAccountResponse.Id,
+            Amount = (int)(amount * 100), // Convert dollars to cents
+            Number = 1001,
+            Memo = memo,
+            Message = "<p>Thank you for your business!</p>",
+            IdempotencyKey = Guid.NewGuid().ToString()
+        });
+
+        return checkResponse.Id;
     }
 }
 ```
