@@ -1,50 +1,19 @@
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using Moq.Protected;
 using Shane32.PostGrid.Contacts;
 
 namespace Tests;
 
-public class ContactsTests
+public class ContactsTests : PostGridTestBase
 {
     [Fact]
     public async Task CreateContact_Sucessful()
     {
-        // Arrange
-        // Mock HTTP message handler to capture the request and return a predefined response
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+        // Set up the response handler
+        CreateResponse = VerifyRequestAndCreateResponse;
 
-        mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .Returns(VerifyRequestAndCreateResponse);
-
-        // Set up DI
-        var services = new ServiceCollection();
-
-        // Configure with test API key
-        services.AddPostGrid(options => {
-            options.ApiKey = "test_api_key_123";
-            options.BaseUrl = "https://api.postgrid.com/print-mail/v1";
-        });
-
-        // Replace the HttpClient with our mocked one
-        services.AddHttpClient<IPostGridConnection, PostGridConnection>()
-            .ConfigurePrimaryHttpMessageHandler(() => mockHttpMessageHandler.Object);
-
-        using var serviceProvider = services.BuildServiceProvider();
-
-        // Get the PostGrid client from DI
-        var postGrid = serviceProvider.GetRequiredService<PostGrid>();
-
-        // Create the contact request (similar to App.cs)
+        // Create the contact request
         var contactRequest = new CreateRequest {
             FirstName = "Kevin",
             LastName = "Smith",
@@ -69,10 +38,9 @@ public class ContactsTests
         };
 
         // Act
-        var result = await postGrid.Contacts.CreateAsync(contactRequest);
+        var result = await PostGrid.Contacts.CreateAsync(contactRequest);
 
         // Assert
-
         // Verify the response
         result.ShouldNotBeNull();
         result.Id.ShouldBe("contact_123456789");
@@ -139,38 +107,11 @@ public class ContactsTests
         // Contact ID to retrieve
         var contactId = "contact_123456789";
         
-        // Arrange
-        // Mock HTTP message handler to capture the request and return a predefined response
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-
-        mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .Returns(VerifyRequestAndCreateResponse);
-
-        // Set up DI
-        var services = new ServiceCollection();
-
-        // Configure with test API key
-        services.AddPostGrid(options => {
-            options.ApiKey = "test_api_key_123";
-            options.BaseUrl = "https://api.postgrid.com/print-mail/v1";
-        });
-
-        // Replace the HttpClient with our mocked one
-        services.AddHttpClient<IPostGridConnection, PostGridConnection>()
-            .ConfigurePrimaryHttpMessageHandler(() => mockHttpMessageHandler.Object);
-
-        using var serviceProvider = services.BuildServiceProvider();
-
-        // Get the PostGrid client from DI
-        var postGrid = serviceProvider.GetRequiredService<PostGrid>();
+        // Set up the response handler
+        CreateResponse = VerifyRequestAndCreateResponse;
 
         // Act
-        var result = await postGrid.Contacts.GetAsync(contactId);
+        var result = await PostGrid.Contacts.GetAsync(contactId);
 
         // Assert
         // Verify the response
@@ -230,38 +171,11 @@ public class ContactsTests
         // Contact ID to delete
         var contactId = "contact_123456789";
         
-        // Arrange
-        // Mock HTTP message handler to capture the request and return a predefined response
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-
-        mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .Returns(VerifyRequestAndCreateResponse);
-
-        // Set up DI
-        var services = new ServiceCollection();
-
-        // Configure with test API key
-        services.AddPostGrid(options => {
-            options.ApiKey = "test_api_key_123";
-            options.BaseUrl = "https://api.postgrid.com/print-mail/v1";
-        });
-
-        // Replace the HttpClient with our mocked one
-        services.AddHttpClient<IPostGridConnection, PostGridConnection>()
-            .ConfigurePrimaryHttpMessageHandler(() => mockHttpMessageHandler.Object);
-
-        using var serviceProvider = services.BuildServiceProvider();
-
-        // Get the PostGrid client from DI
-        var postGrid = serviceProvider.GetRequiredService<PostGrid>();
+        // Set up the response handler
+        CreateResponse = VerifyRequestAndCreateResponse;
 
         // Act - this should not throw an exception if successful
-        await postGrid.Contacts.DeleteAsync(contactId);
+        await PostGrid.Contacts.DeleteAsync(contactId);
 
         // Assert - the verification happens in the VerifyRequestAndCreateResponse method
         // No need to assert on the result since it's void
@@ -297,40 +211,13 @@ public class ContactsTests
         // Contact ID to delete
         var contactId = "contact_123456789";
         
-        // Arrange
-        // Mock HTTP message handler to capture the request and return a predefined response
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-
-        mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .Returns(VerifyRequestAndCreateResponse);
-
-        // Set up DI
-        var services = new ServiceCollection();
-
-        // Configure with test API key
-        services.AddPostGrid(options => {
-            options.ApiKey = "test_api_key_123";
-            options.BaseUrl = "https://api.postgrid.com/print-mail/v1";
-        });
-
-        // Replace the HttpClient with our mocked one
-        services.AddHttpClient<IPostGridConnection, PostGridConnection>()
-            .ConfigurePrimaryHttpMessageHandler(() => mockHttpMessageHandler.Object);
-
-        using var serviceProvider = services.BuildServiceProvider();
-
-        // Get the PostGrid client from DI
-        var postGrid = serviceProvider.GetRequiredService<PostGrid>();
+        // Set up the response handler
+        CreateResponse = VerifyRequestAndCreateResponse;
 
         // Act & Assert
         // The delete operation should throw a PostGridException
         var exception = await Should.ThrowAsync<PostGridException>(async () =>
-            await postGrid.Contacts.DeleteAsync(contactId));
+            await PostGrid.Contacts.DeleteAsync(contactId));
         
         // Verify the exception details
         exception.ShouldNotBeNull();
@@ -364,35 +251,8 @@ public class ContactsTests
     [Fact]
     public async Task ListContacts_Successful()
     {
-        // Arrange
-        // Mock HTTP message handler to capture the request and return a predefined response
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-
-        mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .Returns(VerifyRequestAndCreateResponse);
-
-        // Set up DI
-        var services = new ServiceCollection();
-
-        // Configure with test API key
-        services.AddPostGrid(options => {
-            options.ApiKey = "test_api_key_123";
-            options.BaseUrl = "https://api.postgrid.com/print-mail/v1";
-        });
-
-        // Replace the HttpClient with our mocked one
-        services.AddHttpClient<IPostGridConnection, PostGridConnection>()
-            .ConfigurePrimaryHttpMessageHandler(() => mockHttpMessageHandler.Object);
-
-        using var serviceProvider = services.BuildServiceProvider();
-
-        // Get the PostGrid client from DI
-        var postGrid = serviceProvider.GetRequiredService<PostGrid>();
+        // Set up the response handler
+        CreateResponse = VerifyRequestAndCreateResponse;
 
         // Create the list request with pagination and search parameters
         var listRequest = new ListRequest {
@@ -402,7 +262,7 @@ public class ContactsTests
         };
 
         // Act
-        var result = await postGrid.Contacts.ListAsync(listRequest);
+        var result = await PostGrid.Contacts.ListAsync(listRequest);
 
         // Assert
         // Verify the response
