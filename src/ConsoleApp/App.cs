@@ -53,12 +53,18 @@ public class App
 
         // Create a bank account
         var bankAccountRequest = new Shane32.PostGrid.BankAccounts.CreateRequest {
-            BankName = "Example Bank",
+            BankName = "Test Bank",
             AccountNumber = "123456789",
             RoutingNumber = "021000021", // Example routing number
             BankCountryCode = "US",
-            SignatureText = "Kevin Smith",
-            Description = "Example bank account"
+            SignatureText = "John Doe",
+            BankPrimaryLine = "123 Main St",
+            BankSecondaryLine = "New York, NY 10001",
+            Description = "Test bank account",
+            Metadata = new Dictionary<string, string>
+            {
+                { "type", "checking" }
+            }
         };
 
         Console.WriteLine("Creating bank account...");
