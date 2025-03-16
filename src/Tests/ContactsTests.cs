@@ -79,9 +79,9 @@ public class ContactsTests
         result.FirstName.ShouldBe("Kevin");
         result.LastName.ShouldBe("Smith");
         result.CompanyName.ShouldBe("PostGrid");
-        result.AddressLine1.ShouldBe("20-20 bay st");
-        result.AddressLine2.ShouldBe("floor 11");
-        result.City.ShouldBe("toronto");
+        result.AddressLine1.ShouldBe("20-20 BAY ST");
+        result.AddressLine2.ShouldBe("FLOOR 11");
+        result.City.ShouldBe("TORONTO");
         result.ProvinceOrState.ShouldBe("ON");
         result.PostalOrZip.ShouldBe("M5J 2N8");
         result.CountryCode.ShouldBe("CA");
@@ -90,12 +90,14 @@ public class ContactsTests
         result.JobTitle.ShouldBe("Manager");
         result.Description.ShouldBe("Kevin Smith's contact information");
         result.AddressStatus.ShouldBe("verified");
-        result.Live.ShouldBeTrue();
+        result.Live.ShouldBeFalse();
         result.Secret.ShouldBeFalse();
         result.SkipVerification.ShouldBeFalse();
         result.ForceVerifiedStatus.ShouldBeFalse();
         result.Metadata.ShouldNotBeNull();
         result.Metadata["friend"].ShouldBe("no");
+        result.CreatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T04:25:42.200Z"));
+        result.UpdatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T04:25:42.200Z"));
 
         // Local function to verify the request and return a response
         async Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -117,36 +119,16 @@ public class ContactsTests
                 """);
 
             // Set up the response
-            var response = new ContactResponse {
-                Id = "contact_123456789",
-                AddressLine1 = "20-20 bay st",
-                AddressLine2 = "floor 11",
-                City = "toronto",
-                ProvinceOrState = "ON",
-                PostalOrZip = "M5J 2N8",
-                CountryCode = "CA",
-                FirstName = "Kevin",
-                LastName = "Smith",
-                CompanyName = "PostGrid",
-                Email = "kevinsmith@postgrid.com",
-                PhoneNumber = "8885550100",
-                JobTitle = "Manager",
-                Description = "Kevin Smith's contact information",
-                AddressStatus = "verified",
-                Live = true,
-                Secret = false,
-                SkipVerification = false,
-                ForceVerifiedStatus = false,
-                Metadata = new Dictionary<string, string> { { "friend", "no" } }
-            };
+            // Note: this is an actual response from the PostGrid API (a test account), except the id
+            // Notice that the address has been validated and modified by the API
+            var response = """
+                {"id":"contact_123456789","object":"contact","live":false,"addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","forceVerifiedStatus":false,"jobTitle":"Manager","lastName":"Smith","mailingLists":[],"metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false,"skipVerification":false,"createdAt":"2025-03-16T04:25:42.200Z","updatedAt":"2025-03-16T04:25:42.200Z"}
+                """;
 
             // Return the response
             return new HttpResponseMessage {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(
-                    JsonSerializer.Serialize(response, PostGridJsonSerializerContext.Default.ContactResponse),
-                    Encoding.UTF8,
-                    "application/json")
+                Content = new StringContent(response, Encoding.UTF8, "application/json")
             };
         }
     }

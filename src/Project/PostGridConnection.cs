@@ -152,6 +152,14 @@ public partial class PostGridConnection : IPostGridConnection
             requestFactory,
             async (stream, token) => await JsonSerializer.DeserializeAsync(stream, jsonTypeInfo, token)
                 ?? throw new JsonException("The response returned a null object."),
+            /*
+            async (stream, token) => {
+                // Deserialize the response to a string for debugging
+                var responseString = await new StreamReader(stream).ReadToEndAsync();
+                return JsonSerializer.Deserialize<T>(responseString, jsonTypeInfo)
+                    ?? throw new JsonException("The response returned a null object.");
+            },
+            */
             cancellationToken);
     }
 }

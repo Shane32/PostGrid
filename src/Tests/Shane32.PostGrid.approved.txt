@@ -167,6 +167,7 @@ namespace Shane32.PostGrid.Contacts
         public string? City { get; set; }
         public string? CompanyName { get; set; }
         public string? CountryCode { get; set; }
+        public System.DateTimeOffset CreatedAt { get; set; }
         public string? Description { get; set; }
         public string? Email { get; set; }
         public string? FirstName { get; set; }
@@ -178,6 +179,7 @@ namespace Shane32.PostGrid.Contacts
         public string? PostalOrZip { get; set; }
         public string? ProvinceOrState { get; set; }
         public bool Secret { get; set; }
+        public System.DateTimeOffset UpdatedAt { get; set; }
     }
     public class ContactResponse : Shane32.PostGrid.Contacts.ContactBaseResponse
     {

@@ -89,4 +89,14 @@ public class ContactBaseResponse
     /// Hide contact details apart from final print
     /// </summary>
     public required bool Secret { get; set; }
+
+    /// <summary>
+    /// The date and time when the contact was created
+    /// </summary>
+    public DateTimeOffset CreatedAt { get; set; }
+
+    /// <summary>
+    /// The date and time when the contact was last updated
+    /// </summary>
+    public DateTimeOffset UpdatedAt { get; set; }
 }
