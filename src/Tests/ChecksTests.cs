@@ -22,6 +22,20 @@ public class ChecksTests : PostGridTestBase
             Number = 1001, // Check number
             Memo = "Example payment",
             Message = "<p>Thank you for your business!</p>",
+            Description = "Test check description",
+            Logo = "https://example.com/logo.png",
+            LetterHTML = "<p>Test letter content</p>",
+            CurrencyCode = "USD",
+            Size = "us_letter",
+            MailingClass = "first_class",
+            MergeVariables = new Dictionary<string, string> {
+                { "variable1", "value1" },
+                { "variable2", "value2" }
+            },
+            Metadata = new Dictionary<string, string> {
+                { "key1", "value1" },
+                { "key2", "value2" }
+            },
             IdempotencyKey = "test-idempotency-key"
         };
 
@@ -125,7 +139,7 @@ public class ChecksTests : PostGridTestBase
             request.Content.ShouldBeOfType<FormUrlEncodedContent>();
             var formData = await request.Content.ReadAsStringAsync();
             formData.ShouldBe("""
-                to=contact_123456789&from=contact_123456789&bankAccount=bank_123456789&amount=10000&number=1001&memo=Example+payment&message=%3Cp%3EThank+you+for+your+business%21%3C%2Fp%3E
+                to=contact_123456789&from=contact_123456789&bankAccount=bank_123456789&amount=10000&number=1001&memo=Example+payment&message=%3Cp%3EThank+you+for+your+business%21%3C%2Fp%3E&logo=https%3A%2F%2Fexample.com%2Flogo.png&currencyCode=USD&mailingClass=first_class&description=Test+check+description&size=us_letter&letterHTML=%3Cp%3ETest+letter+content%3C%2Fp%3E&mergeVariables%5Bvariable1%5D=value1&mergeVariables%5Bvariable2%5D=value2&metadata%5Bkey1%5D=value1&metadata%5Bkey2%5D=value2
                 """);
 
             // Set up the response
