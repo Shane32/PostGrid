@@ -85,6 +85,11 @@ namespace Shane32.PostGrid.Checks
         public string CancelledByUser { get; set; }
         public string Reason { get; set; }
     }
+    public class CheckLetterSettings
+    {
+        public CheckLetterSettings() { }
+        public bool? Color { get; set; }
+    }
     public class CheckResponse
     {
         [System.Obsolete("Constructors of types with required members are not supported in this version of " +
@@ -103,7 +108,7 @@ namespace Shane32.PostGrid.Checks
         public string? ImbStatus { get; set; }
         [System.Text.Json.Serialization.JsonPropertyName("letterHTML")]
         public string? LetterHTML { get; set; }
-        public Shane32.PostGrid.Checks.LetterSettings? LetterSettings { get; set; }
+        public Shane32.PostGrid.Checks.CheckLetterSettings? LetterSettings { get; set; }
         public string? LetterTemplate { get; set; }
         [System.Text.Json.Serialization.JsonPropertyName("letterUploadedPDF")]
         public string? LetterUploadedPDF { get; set; }
@@ -164,11 +169,6 @@ namespace Shane32.PostGrid.Checks
             "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
-    }
-    public class LetterSettings
-    {
-        public LetterSettings() { }
-        public bool? Color { get; set; }
     }
     public class ListRequest
     {
