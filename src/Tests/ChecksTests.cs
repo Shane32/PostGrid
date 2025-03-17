@@ -292,32 +292,50 @@ public class ChecksTests : PostGridTestBase
         }
     }
 
-    [Fact]
-    public async Task ListChecks_Successful()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task ListChecks_Successful(bool listAll)
     {
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
-        // Create the list request with pagination parameters
-        var listRequest = new ListRequest {
-            Skip = 0,
-            Limit = 10
-        };
+        CheckResponse check;
 
-        // Act
-        var result = await PostGrid.Checks.ListAsync(listRequest);
+        if (!listAll) {
+            // Create the list request with pagination parameters
+            var listRequest = new ListRequest {
+                Skip = 0,
+                Limit = 10
+            };
 
-        // Assert
-        // Verify the response
-        result.ShouldNotBeNull();
-        result.Skip.ShouldBe(0);
-        result.Limit.ShouldBe(10);
-        result.TotalCount.ShouldBe(10);
-        result.Data.ShouldNotBeNull();
-        result.Data.Length.ShouldBe(1);
+            // Act
+            var result = await PostGrid.Checks.ListAsync(listRequest);
+
+            // Assert
+            // Verify the response
+            result.ShouldNotBeNull();
+            result.Skip.ShouldBe(0);
+            result.Limit.ShouldBe(10);
+            result.TotalCount.ShouldBe(1);
+            result.Data.ShouldNotBeNull();
+            result.Data.Length.ShouldBe(1);
+
+            check = result.Data[0];
+        } else {
+            List<CheckResponse> checks = new();
+
+            // Act
+            await foreach (var checkItem in PostGrid.Checks.ListAllAsync(10)) {
+                checks.Add(checkItem);
+            }
+
+            // Assert
+            checks.Count.ShouldBe(1);
+            check = checks[0];
+        }
 
         // Verify the check in the list
-        var check = result.Data[0];
         check.ShouldNotBeNull();
         check.Id.ShouldBe("cheque_123456789");
         check.Live.ShouldBeFalse();
@@ -394,7 +412,7 @@ public class ChecksTests : PostGridTestBase
 
             // Set up the response
             var response = """
-                {"object":"list","limit":10,"skip":0,"totalCount":10,"data":[{"id":"cheque_123456789","object":"cheque","live":false,"amount":10000,"bankAccount":"bank_123456789","carrierTracking":null,"currencyCode":"USD","envelope":"standard","from":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"mailingClass":"first_class","memo":"Example payment","message":"<p>Thank you for your business!</p>","number":1001,"pageCount":2,"sendDate":"2025-03-16T17:07:19.983Z","size":"us_letter","status":"ready","to":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"url":"https://example.com/test/cheque_123456789.pdf","createdAt":"2025-03-16T17:07:19.986Z","updatedAt":"2025-03-16T17:07:22.775Z"}]}
+                {"object":"list","limit":10,"skip":0,"totalCount":1,"data":[{"id":"cheque_123456789","object":"cheque","live":false,"amount":10000,"bankAccount":"bank_123456789","carrierTracking":null,"currencyCode":"USD","envelope":"standard","from":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"mailingClass":"first_class","memo":"Example payment","message":"<p>Thank you for your business!</p>","number":1001,"pageCount":2,"sendDate":"2025-03-16T17:07:19.983Z","size":"us_letter","status":"ready","to":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"url":"https://example.com/test/cheque_123456789.pdf","createdAt":"2025-03-16T17:07:19.986Z","updatedAt":"2025-03-16T17:07:22.775Z"}]}
                 """;
 
             // Return the response
@@ -405,8 +423,10 @@ public class ChecksTests : PostGridTestBase
         }
     }
 
-    [Fact]
-    public async Task CancelCheck_Successful()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("Sample note")]
+    public async Task CancelCheck_Successful(string? note)
     {
         // Check ID to cancel
         var checkId = "cheque_123456789";
@@ -415,7 +435,9 @@ public class ChecksTests : PostGridTestBase
         CreateResponse = VerifyRequestAndCreateResponse;
 
         // Act
-        var result = await PostGrid.Checks.CancelAsync(checkId);
+        var result = note == null
+            ? await PostGrid.Checks.CancelAsync(checkId)
+            : await PostGrid.Checks.CancelAsync(checkId, note);
 
         // Assert
         // Verify the response
@@ -442,22 +464,27 @@ public class ChecksTests : PostGridTestBase
         result.Cancellation.ShouldNotBeNull();
         result.Cancellation.CancelledByUser.ShouldBe("user_123456789");
         result.Cancellation.Reason.ShouldBe("user_initiated");
+        result.Cancellation.Note.ShouldBe(note);
 
         // Local function to verify the request and return a response
         Task<HttpResponseMessage> VerifyRequestAndCreateResponse(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // Verify the request
             request.ShouldNotBeNull();
-            request.Method.ShouldBe(HttpMethod.Delete);
-            request.RequestUri.ShouldNotBeNull().ToString().ShouldBe($"https://api.postgrid.com/print-mail/v1/cheques/{checkId}");
+            request.Method.ShouldBe(note == null ? HttpMethod.Delete : HttpMethod.Post);
+            request.RequestUri.ShouldNotBeNull().ToString().ShouldBe(note == null ? $"https://api.postgrid.com/print-mail/v1/cheques/{checkId}" : $"https://api.postgrid.com/print-mail/v1/cheques/{checkId}/cancellation");
 
             // Verify headers
             request.Headers.Contains("x-api-key").ShouldBeTrue();
             request.Headers.GetValues("x-api-key").ShouldBe(new string[] { "test_api_key_123" });
 
             // Set up the response
-            var response = """
+            var response = note == null
+                ? """
                 {"id":"cheque_123456789","object":"cheque","live":false,"amount":10000,"bankAccount":"bank_123456789","cancellation":{"cancelledByUser":"user_123456789","reason":"user_initiated"},"carrierTracking":null,"currencyCode":"USD","envelope":"standard","from":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"mailingClass":"first_class","memo":"Example payment","message":"<p>Thank you for your business!</p>","number":1001,"pageCount":2,"sendDate":"2025-03-16T17:07:19.983Z","size":"us_letter","status":"cancelled","to":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"url":"https://example.com/test/cheque_123456789.pdf","createdAt":"2025-03-16T17:07:19.986Z","updatedAt":"2025-03-16T17:09:47.707Z"}
+                """
+                : """
+                {"id":"cheque_123456789","object":"cheque","live":false,"amount":10000,"bankAccount":"bank_123456789","cancellation":{"cancelledByUser":"user_123456789","reason":"user_initiated","note":"Sample note"},"carrierTracking":null,"currencyCode":"USD","envelope":"standard","from":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"mailingClass":"first_class","memo":"Example payment","message":"<p>Thank you for your business!</p>","number":1001,"pageCount":2,"sendDate":"2025-03-16T17:07:19.983Z","size":"us_letter","status":"cancelled","to":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"url":"https://example.com/test/cheque_123456789.pdf","createdAt":"2025-03-16T17:07:19.986Z","updatedAt":"2025-03-16T17:09:47.707Z"}
                 """;
 
             // Return the response

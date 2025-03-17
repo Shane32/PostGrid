@@ -14,4 +14,9 @@ public class CheckCancellationInfo
     /// The reason for cancellation
     /// </summary>
     public required string Reason { get; set; }
+
+    /// <summary>
+    /// A note for the cancellation of the check
+    /// </summary>
+    public string? Note { get; set; }
 }
