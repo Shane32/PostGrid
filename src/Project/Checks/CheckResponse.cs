@@ -148,4 +148,25 @@ public class CheckResponse
     /// Cancellation information if the check has been cancelled
     /// </summary>
     public CheckCancellationInfo? Cancellation { get; set; }
+
+    /// <summary>
+    /// Indicates if express shipping was used
+    /// </summary>
+    public bool? Express { get; set; }
+
+    /// <summary>
+    /// Settings for the letter
+    /// </summary>
+    public LetterSettings? LetterSettings { get; set; }
+}
+
+/// <summary>
+/// Represents settings for a letter
+/// </summary>
+public class LetterSettings
+{
+    /// <summary>
+    /// Indicates if the letter should be printed in color
+    /// </summary>
+    public bool? Color { get; set; }
 }

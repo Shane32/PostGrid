@@ -97,11 +97,13 @@ namespace Shane32.PostGrid.Checks
         public string CurrencyCode { get; set; }
         public string? Description { get; set; }
         public string Envelope { get; set; }
+        public bool? Express { get; set; }
         public Shane32.PostGrid.Contacts.ContactBaseResponse From { get; set; }
         public string Id { get; set; }
         public string? ImbStatus { get; set; }
         [System.Text.Json.Serialization.JsonPropertyName("letterHTML")]
         public string? LetterHTML { get; set; }
+        public Shane32.PostGrid.Checks.LetterSettings? LetterSettings { get; set; }
         public string? LetterTemplate { get; set; }
         [System.Text.Json.Serialization.JsonPropertyName("letterUploadedPDF")]
         public string? LetterUploadedPDF { get; set; }
@@ -162,6 +164,11 @@ namespace Shane32.PostGrid.Checks
             "your compiler.", true)]
         public GetRequest() { }
         public string Id { get; set; }
+    }
+    public class LetterSettings
+    {
+        public LetterSettings() { }
+        public bool? Color { get; set; }
     }
     public class ListRequest
     {
