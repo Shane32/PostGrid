@@ -406,16 +406,16 @@ public class ChecksTests : PostGridTestBase
     }
 
     [Fact]
-    public async Task DeleteCheck_Successful()
+    public async Task CancelCheck_Successful()
     {
-        // Check ID to delete
+        // Check ID to cancel
         var checkId = "cheque_123456789";
 
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
 
         // Act
-        var result = await PostGrid.Checks.DeleteAsync(checkId);
+        var result = await PostGrid.Checks.CancelAsync(checkId);
 
         // Assert
         // Verify the response
@@ -469,7 +469,7 @@ public class ChecksTests : PostGridTestBase
     }
 
     [Fact]
-    public async Task GetCheck_AfterDelete_Successful()
+    public async Task GetCheck_AfterCancel_Successful()
     {
         // Check ID to retrieve
         var checkId = "cheque_123456789";

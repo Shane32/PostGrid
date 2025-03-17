@@ -190,23 +190,6 @@ public partial class PostGridConnection
     }
 
     /// <inheritdoc />
-    public async Task<CheckResponse> ExecuteAsync(DeleteRequest request, CancellationToken cancellationToken = default)
-    {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
-
-        if (string.IsNullOrEmpty(request.Id))
-            throw new ArgumentException("Cheque ID cannot be null or empty", nameof(request));
-
-        // Create a request factory function
-        Func<HttpRequestMessage> requestFactory =
-            () => new HttpRequestMessage(HttpMethod.Delete, $"{_options.BaseUrl}/cheques/{request.Id}");
-
-        // Use the generic SendRequestAsync method with JsonTypeInfo
-        return await SendRequestAsync(requestFactory, PostGridJsonSerializerContext.Default.CheckResponse, cancellationToken);
-    }
-
-    /// <inheritdoc />
     public async Task<CheckResponse> ExecuteAsync(CancelRequest request, CancellationToken cancellationToken = default)
     {
         if (request == null)
@@ -215,19 +198,25 @@ public partial class PostGridConnection
         if (string.IsNullOrEmpty(request.Id))
             throw new ArgumentException("Cheque ID cannot be null or empty", nameof(request));
 
-        // Convert the request object to form data
-        var formData = new List<KeyValuePair<string, string>>();
-
-        // Add the note if provided
-        if (request.Note != null)
-            formData.Add(new KeyValuePair<string, string>("note", request.Note));
-
         // Create a request factory function
-        Func<HttpRequestMessage> requestFactory = () => {
-            var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/cheques/{request.Id}/cancellation");
-            newRequest.Content = new FormUrlEncodedContent(formData);
-            return newRequest;
-        };
+        Func<HttpRequestMessage> requestFactory;
+        if (request.Note == null || string.IsNullOrWhiteSpace(request.Note)) {
+            requestFactory = () => new HttpRequestMessage(HttpMethod.Delete, $"{_options.BaseUrl}/cheques/{request.Id}");
+        } else {
+            // Convert the request object to form data
+            var formData = new List<KeyValuePair<string, string>>();
+
+            // Add the note if provided
+            if (request.Note != null)
+                formData.Add(new KeyValuePair<string, string>("note", request.Note));
+
+            // Create a request factory function
+            requestFactory = () => {
+                var newRequest = new HttpRequestMessage(HttpMethod.Post, $"{_options.BaseUrl}/cheques/{request.Id}/cancellation");
+                newRequest.Content = new FormUrlEncodedContent(formData);
+                return newRequest;
+            };
+        }
 
         // Use the generic SendRequestAsync method with JsonTypeInfo
         return await SendRequestAsync(requestFactory, PostGridJsonSerializerContext.Default.CheckResponse, cancellationToken);
