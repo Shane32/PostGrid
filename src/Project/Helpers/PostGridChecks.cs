@@ -60,11 +60,8 @@ public class PostGridChecks
     /// <param name="id">The ID of the check to cancel.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation, containing the response from the API.</returns>
-    public async Task<CheckResponse> CancelAsync(string id, CancellationToken cancellationToken = default)
-    {
-        var request = new CancelRequest { Id = id };
-        return await _connection.ExecuteAsync(request, cancellationToken);
-    }
+    public Task<CheckResponse> CancelAsync(string id, CancellationToken cancellationToken = default)
+        => CancelAsync(id, null, cancellationToken);
 
     /// <summary>
     /// Lists checks from PostGrid with pagination and search options.
