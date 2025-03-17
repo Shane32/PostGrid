@@ -130,7 +130,7 @@ public class App
 
         var checkList = await _postGrid.Checks.ListAsync();
 
-        var deleteResponse = await _postGrid.Checks.DeleteAsync(checkResponse.Id);
+        var deleteResponse = await _postGrid.Checks.CancelAsync(checkResponse.Id);
         Console.WriteLine($"Check deleted: {deleteResponse}");
         Console.ReadLine();
 

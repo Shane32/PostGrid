@@ -42,14 +42,15 @@ public class PostGridChecks
     }
 
     /// <summary>
-    /// Deletes a check from PostGrid by ID.
+    /// Cancels a check from PostGrid by ID.
     /// </summary>
-    /// <param name="id">The ID of the check to delete.</param>
+    /// <param name="id">The ID of the check to cancel.</param>
+    /// <param name="note">An optional note explaining the reason for cancellation.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation, containing the response from the API.</returns>
-    public async Task<CheckResponse> DeleteAsync(string id, CancellationToken cancellationToken = default)
+    public async Task<CheckResponse> CancelAsync(string id, string? note, CancellationToken cancellationToken = default)
     {
-        var request = new DeleteRequest { Id = id };
+        var request = new CancelRequest { Id = id, Note = note };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
 
@@ -57,12 +58,11 @@ public class PostGridChecks
     /// Cancels a check from PostGrid by ID.
     /// </summary>
     /// <param name="id">The ID of the check to cancel.</param>
-    /// <param name="note">An optional note explaining the reason for cancellation.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation, containing the response from the API.</returns>
-    public async Task<CheckResponse> CancelAsync(string id, string? note = null, CancellationToken cancellationToken = default)
+    public async Task<CheckResponse> CancelAsync(string id, CancellationToken cancellationToken = default)
     {
-        var request = new CancelRequest { Id = id, Note = note };
+        var request = new CancelRequest { Id = id };
         return await _connection.ExecuteAsync(request, cancellationToken);
     }
 
