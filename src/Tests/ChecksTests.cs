@@ -7,8 +7,10 @@ namespace Tests;
 
 public class ChecksTests : PostGridTestBase
 {
-    [Fact]
-    public async Task CreateCheck_Successful()
+    [Theory]
+    [InlineData(true)]  // Test with letter PDF
+    [InlineData(false)] // Test with letter HTML
+    public async Task CreateCheck_Successful(bool useLetterPDF)
     {
         // Set up the response handler
         CreateResponse = VerifyRequestAndCreateResponse;
@@ -22,8 +24,30 @@ public class ChecksTests : PostGridTestBase
             Number = 1001, // Check number
             Memo = "Example payment",
             Message = "<p>Thank you for your business!</p>",
+            Description = "Test check description",
+            Logo = "https://example.com/logo.png",
+            CurrencyCode = "USD",
+            Size = "us_letter",
+            MailingClass = "first_class",
+            MergeVariables = new Dictionary<string, string> {
+                { "variable1", "value1" },
+                { "variable2", "value2" }
+            },
+            Metadata = new Dictionary<string, string> {
+                { "key1", "value1" },
+                { "key2", "value2" }
+            },
             IdempotencyKey = "test-idempotency-key"
         };
+
+        // Set either letter PDF or HTML based on the test case
+        if (useLetterPDF) {
+            // Use a sample PDF for testing
+            checkRequest.LetterPDF = new byte[] { 0x25, 0x50, 0x44, 0x46 }; // PDF header bytes
+            checkRequest.LetterPDFContentType = "application/pdf";
+        } else {
+            checkRequest.LetterHTML = "<p>Test letter content</p>";
+        }
 
         // Act
         var result = await PostGrid.Checks.CreateAsync(checkRequest);
@@ -50,7 +74,11 @@ public class ChecksTests : PostGridTestBase
         // Verify additional properties
         result.Description.ShouldBe("Test check description");
         result.Logo.ShouldBe("https://example.com/logo.png");
-        result.LetterHTML.ShouldBe("<p>Test letter content</p>");
+
+        // Verify letter content based on test case
+        if (!useLetterPDF) {
+            result.LetterHTML.ShouldBe("<p>Test letter content</p>");
+        }
 
         // Verify merge variables
         result.MergeVariables.ShouldNotBeNull();
@@ -122,11 +150,33 @@ public class ChecksTests : PostGridTestBase
             request.Headers.GetValues("Idempotency-Key").ShouldBe(new string[] { "test-idempotency-key" });
 
             // Verify form data
-            request.Content.ShouldBeOfType<FormUrlEncodedContent>();
-            var formData = await request.Content.ReadAsStringAsync();
-            formData.ShouldBe("""
-                to=contact_123456789&from=contact_123456789&bankAccount=bank_123456789&amount=10000&number=1001&memo=Example+payment&message=%3Cp%3EThank+you+for+your+business%21%3C%2Fp%3E
-                """);
+            if (request.Content is MultipartFormDataContent multipartContent && useLetterPDF) {
+                // Verify the multipart form data contains all expected parts with correct values
+                multipartContent.ShouldContainPart("letterPDF", "application/pdf");
+                multipartContent.ShouldContainPartWithValue("to", "contact_123456789");
+                multipartContent.ShouldContainPartWithValue("from", "contact_123456789");
+                multipartContent.ShouldContainPartWithValue("bankAccount", "bank_123456789");
+                multipartContent.ShouldContainPartWithValue("amount", "10000");
+                multipartContent.ShouldContainPartWithValue("number", "1001");
+                multipartContent.ShouldContainPartWithValue("memo", "Example payment");
+                multipartContent.ShouldContainPartWithValue("message", "<p>Thank you for your business!</p>");
+                multipartContent.ShouldContainPartWithValue("logo", "https://example.com/logo.png");
+                multipartContent.ShouldContainPartWithValue("currencyCode", "USD");
+                multipartContent.ShouldContainPartWithValue("mailingClass", "first_class");
+                multipartContent.ShouldContainPartWithValue("description", "Test check description");
+                multipartContent.ShouldContainPartWithValue("size", "us_letter");
+                multipartContent.ShouldContainPartWithValue("mergeVariables[variable1]", "value1");
+                multipartContent.ShouldContainPartWithValue("mergeVariables[variable2]", "value2");
+                multipartContent.ShouldContainPartWithValue("metadata[key1]", "value1");
+                multipartContent.ShouldContainPartWithValue("metadata[key2]", "value2");
+            } else {
+                // For letter HTML, we expect form URL encoded content
+                request.Content.ShouldBeOfType<FormUrlEncodedContent>();
+                var formData = await request.Content.ReadAsStringAsync();
+                formData.ShouldBe("""
+                    to=contact_123456789&from=contact_123456789&bankAccount=bank_123456789&amount=10000&number=1001&memo=Example+payment&message=%3Cp%3EThank+you+for+your+business%21%3C%2Fp%3E&logo=https%3A%2F%2Fexample.com%2Flogo.png&currencyCode=USD&mailingClass=first_class&description=Test+check+description&size=us_letter&letterHTML=%3Cp%3ETest+letter+content%3C%2Fp%3E&mergeVariables%5Bvariable1%5D=value1&mergeVariables%5Bvariable2%5D=value2&metadata%5Bkey1%5D=value1&metadata%5Bkey2%5D=value2
+                    """);
+            }
 
             // Set up the response
             var response = """
