@@ -89,6 +89,20 @@ public class App
             Number = 1001, // Check number
             Memo = "Example payment",
             Message = "<p>Thank you for your business!</p>",
+            Description = "Test check description",
+            Logo = "https://example.com/logo.png",
+            LetterHTML = "<p>Test letter content</p>",
+            CurrencyCode = "USD",
+            Size = "us_letter",
+            MailingClass = "first_class",
+            MergeVariables = new Dictionary<string, string> {
+                { "variable1", "value1" },
+                { "variable2", "value2" }
+            },
+            Metadata = new Dictionary<string, string> {
+                { "key1", "value1" },
+                { "key2", "value2" }
+            },
             IdempotencyKey = Guid.NewGuid().ToString() // Add a unique idempotency key
         };
 

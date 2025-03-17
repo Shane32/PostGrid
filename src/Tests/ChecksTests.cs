@@ -47,6 +47,23 @@ public class ChecksTests : PostGridTestBase
         result.CreatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T17:07:19.986Z"));
         result.UpdatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T17:07:19.986Z"));
 
+        // Verify additional properties
+        result.Description.ShouldBe("Test check description");
+        result.Logo.ShouldBe("https://example.com/logo.png");
+        result.LetterHTML.ShouldBe("<p>Test letter content</p>");
+
+        // Verify merge variables
+        result.MergeVariables.ShouldNotBeNull();
+        result.MergeVariables.Count.ShouldBe(2);
+        result.MergeVariables["variable1"].ShouldBe("value1");
+        result.MergeVariables["variable2"].ShouldBe("value2");
+
+        // Verify metadata
+        result.Metadata.ShouldNotBeNull();
+        result.Metadata.Count.ShouldBe(2);
+        result.Metadata["key1"].ShouldBe("value1");
+        result.Metadata["key2"].ShouldBe("value2");
+
         // Verify the contact information in the check
         result.To.ShouldNotBeNull();
         result.To.Id.ShouldBe("contact_123456789");
@@ -113,7 +130,7 @@ public class ChecksTests : PostGridTestBase
 
             // Set up the response
             var response = """
-                {"id":"cheque_123456789","object":"cheque","live":false,"amount":10000,"bankAccount":"bank_123456789","carrierTracking":null,"currencyCode":"USD","envelope":"standard","from":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"mailingClass":"first_class","memo":"Example payment","message":"<p>Thank you for your business!</p>","number":1001,"sendDate":"2025-03-16T17:07:19.983Z","size":"us_letter","status":"ready","to":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"createdAt":"2025-03-16T17:07:19.986Z","updatedAt":"2025-03-16T17:07:19.986Z"}
+                {"id":"cheque_123456789","object":"cheque","live":false,"amount":10000,"bankAccount":"bank_123456789","carrierTracking":null,"currencyCode":"USD","description":"Test check description","envelope":"standard","express":false,"from":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"letterHTML":"<p>Test letter content</p>","letterSettings":{"color":false},"logo":"https://example.com/logo.png","mailingClass":"first_class","memo":"Example payment","mergeVariables":{"variable1":"value1","variable2":"value2"},"message":"<p>Thank you for your business!</p>","metadata":{"key1":"value1","key2":"value2"},"number":1001,"sendDate":"2025-03-16T17:07:19.983Z","size":"us_letter","status":"ready","to":{"id":"contact_123456789","object":"contact","addressLine1":"20-20 BAY ST","addressLine2":"FLOOR 11","addressStatus":"verified","city":"TORONTO","companyName":"PostGrid","country":"CANADA","countryCode":"CA","description":"Kevin Smith's contact information","email":"kevinsmith@postgrid.com","firstName":"Kevin","jobTitle":"Manager","lastName":"Smith","metadata":{"friend":"no"},"phoneNumber":"8885550100","postalOrZip":"M5J 2N8","provinceOrState":"ON","secret":false},"createdAt":"2025-03-16T17:07:19.986Z","updatedAt":"2025-03-16T17:07:19.986Z"}
                 """;
 
             // Return the response
