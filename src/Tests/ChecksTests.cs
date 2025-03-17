@@ -46,18 +46,18 @@ public class ChecksTests : PostGridTestBase
         result.Status.ShouldBe("ready");
         result.CreatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T17:07:19.986Z"));
         result.UpdatedAt.ShouldBe(DateTimeOffset.Parse("2025-03-16T17:07:19.986Z"));
-        
+
         // Verify additional properties
         result.Description.ShouldBe("Test check description");
         result.Logo.ShouldBe("https://example.com/logo.png");
         result.LetterHTML.ShouldBe("<p>Test letter content</p>");
-        
+
         // Verify merge variables
         result.MergeVariables.ShouldNotBeNull();
         result.MergeVariables.Count.ShouldBe(2);
         result.MergeVariables["variable1"].ShouldBe("value1");
         result.MergeVariables["variable2"].ShouldBe("value2");
-        
+
         // Verify metadata
         result.Metadata.ShouldNotBeNull();
         result.Metadata.Count.ShouldBe(2);

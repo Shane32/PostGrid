@@ -157,16 +157,5 @@ public class CheckResponse
     /// <summary>
     /// Settings for the letter
     /// </summary>
-    public LetterSettings? LetterSettings { get; set; }
-}
-
-/// <summary>
-/// Represents settings for a letter
-/// </summary>
-public class LetterSettings
-{
-    /// <summary>
-    /// Indicates if the letter should be printed in color
-    /// </summary>
-    public bool? Color { get; set; }
+    public CheckLetterSettings? LetterSettings { get; set; }
 }
